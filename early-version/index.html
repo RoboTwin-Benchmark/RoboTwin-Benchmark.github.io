@@ -11,25 +11,9 @@
       flex-direction: column;
     }
   
-    .video-container {
-      display: grid;
-      grid-template-columns: repeat(8, 1fr); /* 8列 */
-      grid-template-rows: repeat(4, auto); /* 4行，高度根据内容自动调整 */
-      gap: 10px; /* 网格项之间的间隙 */
-      width: 100%; /* 容器宽度，可根据需要调整 */
-      margin: auto; /* 居中显示 */
-      padding: 5px; /* 容器内边距 */
-      border: 2px dashed #333; /* 虚线边框 */
-      box-sizing: border-box; /* 边框计算在宽度内 */
-    }
-    .video-item {
-      width: 100%; /* 视频宽度 */
-      height: auto; /* 视频高度自适应 */
-      display: block; /* 显示视频 */
-    }
     .thumbnail-container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 15px;
     max-height: 500px;
     overflow-y: auto;
@@ -510,7 +494,7 @@
           document.addEventListener("DOMContentLoaded", function () {
             const models = ['019_coaste', '022_cup', '024_brush', '028_dustpan', '035_apple',
             '038_test_tube', '011_Coca_Cola','018_Sprite', '020_hammer_2'];
-            const scalesize = ["1", "1", "0.4"];
+            const scalesize = ["1", "1", "0.4", "1", "1", "0.4", "1", "1", "0.4"];
             const container = document.getElementById("3d-models");
             const interactiveViewer = document.getElementById("interactive-viewer");
             const infoBox = document.getElementById("info-box");
