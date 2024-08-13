@@ -2,25 +2,23 @@
 <html xmlns="http://www.w3.org/1999/html">
   <style>
     .container {
-      max-width: 1200px;
-      width: 100%;
-      padding: 0 20px;
-      margin: 10px auto 0px; /* Center horizontally and account for fixed toolbar */
+      width: 90%;
+      padding: 1; /* 去除左右内边距 */
+      margin: 20px 0; /* 水平居中 */
       flex: 1;
       display: flex;
       flex-direction: column;
+      flex-wrap: wrap;
     }
-  
+
     .thumbnail-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-    max-height: 500px;
-    overflow-y: auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
     }
   
     .thumbnail-container .viewer {
-      width: 100%;
+      /* width: 100%; */
       aspect-ratio: 1; /* 强制保持正方形比例 */
       background: #ccc; /* 灰色背景 */
       position: relative;
@@ -33,10 +31,10 @@
     }
   
     #interactive-container {
-      display: flex;
+      display: none; /* 默认隐藏 */
       justify-content: space-between;
     }
-  
+
     #interactive-viewer, #info-box {
       width: 50%;
       aspect-ratio: 1; /* 强制保持正方形比例 */
@@ -45,9 +43,10 @@
       float: left; /* 左对齐 */
       position: relative;
     }
-  
+
     #info-box {
       background: #f0f0f0; /* 更浅的背景颜色区分内容 */
+      margin: 20px 0; /* 顶部和底部的间距 */
       display: flex;
       justify-content: center;
       align-items: center;
@@ -95,15 +94,23 @@
         ><span>Task Videos</span>
         <div class="bar"></div
         ></a>
-        <a class="barWrapper" clear href="#results-a" id="bar5"
+        <a class="barWrapper" clear href="#benchmark" id="bar5"
+        ><span>Benchmark</span>
+        <div class="bar"></div
+        ></a>
+        <a class="barWrapper" clear href="#object" id="bar6"
+        ><span>Object</span>
+        <div class="bar"></div
+        ></a>
+        <a class="barWrapper" clear href="#results-a" id="bar7"
           ><span>Results</span>
           <div class="bar"></div
         ></a>
-        <a class="barWrapper" clear href="#results-b" id="bar6"
+        <a class="barWrapper" clear href="#results-b" id="bar8"
           ><span>Visualizations</span>
           <div class="bar"></div
         ></a>
-        <a class="barWrapper" clear href="#citation" id="bar7"
+        <a class="barWrapper" clear href="#citation" id="bar9"
           ><span>Citation</span>
           <div class="bar"></div
         ></a>
@@ -461,6 +468,7 @@
         </div>
         <!-- 继续添加更多任务 -->
         
+        <a class="anchor" id="benchmark"></a>
         <h2>Benchmark</h2>
         <h3 style="margin-bottom: 0">Hammer Beat</h3>
         <div style="display: flex; justify-content: space-around; align-items: center; margin-bottom: 2em;">
@@ -654,6 +662,8 @@
             </div>
         </div>
 
+        <a class="anchor" id="object"></a>
+        <h2>Object (Click)</h2>
         <div class="container">
           <div class="thumbnail-container" id="3d-models"></div>
           <div id="interactive-container">
@@ -686,8 +696,8 @@
       
           document.addEventListener("DOMContentLoaded", function () {
             const models = ['019_coaste', '022_cup', '024_brush', '028_dustpan', '035_apple',
-            '038_test_tube', '011_Coca_Cola','018_Sprite', '020_hammer_2'];
-            const scalesize = ["1", "1", "0.4", "1", "1", "0.4", "1", "1", "0.4"];
+            '011_Coca_Cola','018_Sprite', '020_hammer_2'];
+            const scalesize = ["1.2", "1", "0.7", "1.2", "1", "0.5", "0.5", "1"];
             const container = document.getElementById("3d-models");
             const interactiveViewer = document.getElementById("interactive-viewer");
             const infoBox = document.getElementById("info-box");
@@ -701,25 +711,25 @@
               viewerDiv.dataset.model = model;
               viewerDiv.addEventListener("click", () => updateInteractiveViewer(model, index, viewerDiv));
               container.appendChild(viewerDiv);
-              if (index < 6)
+              if (index < 5)
                 loadModel_mtl(model, index, viewerDiv);
               else loadModel_glb(model, index, viewerDiv);
               // loadModel_glb(model, index, viewerDiv);
-              if (index === 0) {
-                viewerDiv.classList.add("selected");
-                loadInteractiveModel_mtl(model, index, interactiveViewer);
-                updateInfoBox(model, index);
-              }
+              // if (index === 0) {
+              //   viewerDiv.click();
+              //   updateInfoBox(model, index);
+              // }
             });
       
             function updateInteractiveViewer(model, index, selectedViewer) {
+              document.getElementById('interactive-container').style.display = 'block';
               currentModel = model;
               const previousSelected = container.querySelector(".viewer.selected");
               if (previousSelected) {
                 previousSelected.classList.remove("selected");
               }
               selectedViewer.classList.add("selected");
-              if (index < 6)
+              if (index < 5)
               loadInteractiveModel_mtl(model, index, interactiveViewer);
               else loadInteractiveModel_glb(model, index, interactiveViewer);
               // loadInteractiveModel_glb(model, index, interactiveViewer);
@@ -887,8 +897,11 @@
       
                   const maxDim = Math.max(size.x, size.y, size.z);
                   const scale = 1 / maxDim;
-                  object.scale.set(scalesize[index], scalesize[index], scalesize[index]);
-      
+                  
+                  if (index == 1 || index == 4){
+                    object.scale.set(7, 7, 7);
+                  }
+                    
                   camera.position.set(center.x, center.y, size.z * 2);
                   camera.lookAt(center);
       
@@ -963,7 +976,7 @@
       
                 const maxDim = Math.max(size.x, size.y, size.z);
                 const scale = 1 / maxDim;
-                object.scale.set(scalesize[index], scalesize[index], scalesize[index]);
+                // object.scale.set(scalesize[index], scalesize[index], scalesize[index]);
       
                 camera.position.set(center.x, center.y, size.z * 2);
                 camera.lookAt(center);
