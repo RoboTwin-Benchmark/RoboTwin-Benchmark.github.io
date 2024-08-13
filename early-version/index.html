@@ -1,5 +1,77 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/html">
+  <style>
+    .container {
+      max-width: 1200px;
+      width: 100%;
+      padding: 0 20px;
+      margin: 10px auto 0px; /* Center horizontally and account for fixed toolbar */
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+  
+    .video-container {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr); /* 8列 */
+      grid-template-rows: repeat(4, auto); /* 4行，高度根据内容自动调整 */
+      gap: 10px; /* 网格项之间的间隙 */
+      width: 100%; /* 容器宽度，可根据需要调整 */
+      margin: auto; /* 居中显示 */
+      padding: 5px; /* 容器内边距 */
+      border: 2px dashed #333; /* 虚线边框 */
+      box-sizing: border-box; /* 边框计算在宽度内 */
+    }
+    .video-item {
+      width: 100%; /* 视频宽度 */
+      height: auto; /* 视频高度自适应 */
+      display: block; /* 显示视频 */
+    }
+    .thumbnail-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    max-height: 500px;
+    overflow-y: auto;
+    }
+  
+    .thumbnail-container .viewer {
+      width: 100%;
+      aspect-ratio: 1; /* 强制保持正方形比例 */
+      background: #ccc; /* 灰色背景 */
+      position: relative;
+      border: 2px solid transparent;
+      transition: border-color 0.3s;
+    }
+  
+    .thumbnail-container .viewer.selected {
+      border-color: black;
+    }
+  
+    #interactive-container {
+      display: flex;
+      justify-content: space-between;
+    }
+  
+    #interactive-viewer, #info-box {
+      width: 50%;
+      aspect-ratio: 1; /* 强制保持正方形比例 */
+      background: #ccc;
+      margin: 20px 0; /* 顶部和底部的间距 */
+      float: left; /* 左对齐 */
+      position: relative;
+    }
+  
+    #info-box {
+      background: #f0f0f0; /* 更浅的背景颜色区分内容 */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+  
+    </style>
   <head>
     <meta charset="utf-8" />
     <meta
@@ -35,15 +107,19 @@
           ><span>Framework of SkillDiffuser</span>
           <div class="bar"></div
         ></a>
-        <a class="barWrapper" clear href="#results-a" id="bar4"
+        <a class="barWrapper" clear href="#tasks-a" id="bar4"
+        ><span>Task Videos</span>
+        <div class="bar"></div
+        ></a>
+        <a class="barWrapper" clear href="#results-a" id="bar5"
           ><span>Results</span>
           <div class="bar"></div
         ></a>
-        <a class="barWrapper" clear href="#results-b" id="bar5"
+        <a class="barWrapper" clear href="#results-b" id="bar6"
           ><span>Visualizations</span>
           <div class="bar"></div
         ></a>
-        <a class="barWrapper" clear href="#citation" id="bar6"
+        <a class="barWrapper" clear href="#citation" id="bar7"
           ><span>Citation</span>
           <div class="bar"></div
         ></a>
@@ -205,7 +281,534 @@
         <br />
         <p style="font-family: 'Times New Roman',serif"> <strong>Overall framework of SkillDiffuser.</strong> It's a hierarchical planning model that leverages the cooperation of interpretable skill abstractions at the higher level and a skill conditioned diffusion model at the lower level for task execution in a multi-task learning environment. The high-level skill abstraction is achieved through a skill predictor and a vector quantization operation, generating sub-goals (skill set) that the diffusion model employs to determine the appropriate future states. Future states are converted to actions using an inverse dynamics model. This unique fusion enables a consistent underlying planner across different tasks, with the variation only in the inverse dynamics model.
         </p>
+        <!-- ----------------------------- -->
+        <a class="anchor" id="tasks-a"></a>
+        <h2>Task Videos</h2>
+        <h3 style="margin-bottom: 0">Hammer Beat</h3>
+        <div style="display: flex; justify-content: space-around; align-items: center; margin-bottom: 2em;">
+            <div style="text-align: center;">
+                <video controls autoplay muted loop style="width: 250px;">
+                    <source src="files/task_video/success/hammer_beat_expert.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>(a) <span style="color: black;">expert</span> <span style="color: green;">success</span></p>
+            </div>
+            <div style="text-align: center;">
+                <video controls autoplay muted loop style="width: 250px;">
+                    <source src="files/task_video/success/hammer_beat_top.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>(b) <span style="color: black;">top</span> <span style="color: green;">success</span></p>
+            </div>
+            <div style="text-align: center;">
+                <video controls autoplay muted loop style="width: 250px;">
+                    <source src="files/task_video/fail/hammer_beat_expert.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>(c) <span style="color: black;">expert</span> <span style="color: red;">fail</span></p>
+            </div>
+            <div style="text-align: center;">
+                <video controls autoplay muted loop style="width: 250px;">
+                    <source src="files/task_video/fail/hammer_beat_top.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>(d) <span style="color: black;">top</span> <span style="color: red;">fail</span></p>
+            </div>
+        </div>
+        
+        <h3 style="margin-bottom: 0">Move Bottle</h3>
+        <div style="display: flex; justify-content: space-around; align-items: center; margin-bottom: 2em;">
+            <div style="text-align: center;">
+                <video controls autoplay muted loop style="width: 250px;">
+                    <source src="files/task_video/success/move_bottle_expert.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>(a) <span style="color: black;">expert</span> <span style="color: green;">success</span></p>
+            </div>
+            <div style="text-align: center;">
+                <video controls autoplay muted loop style="width: 250px;">
+                    <source src="files/task_video/success/move_bottle_top.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>(b) <span style="color: black;">top</span> <span style="color: green;">success</span></p>
+            </div>
+            <div style="text-align: center;">
+                <video controls autoplay muted loop style="width: 250px;">
+                    <source src="files/task_video/fail/move_bottle_expert.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>(c) <span style="color: black;">expert</span> <span style="color: red;">fail</span></p>
+            </div>
+            <div style="text-align: center;">
+                <video controls autoplay muted loop style="width: 250px;">
+                    <source src="files/task_video/fail/move_bottle_top.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>(d) <span style="color: black;">top</span> <span style="color: red;">fail</span></p>
+            </div>
+        </div>
+        
+        <h3 style="margin-bottom: 0">Open Cabinet And Put Apple</h3>
+        <div style="display: flex; justify-content: space-around; align-items: center; margin-bottom: 2em;">
+            <div style="text-align: center;">
+                <video controls autoplay muted loop style="width: 250px;">
+                    <source src="files/task_video/success/open_cabinet_put_apple_expert.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>(a) <span style="color: black;">expert</span> <span style="color: green;">success</span></p>
+            </div>
+            <div style="text-align: center;">
+                <video controls autoplay muted loop style="width: 250px;">
+                    <source src="files/task_video/success/open_cabinet_put_apple_top.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>(b) <span style="color: black;">top</span> <span style="color: green;">success</span></p>
+            </div>
+            <div style="text-align: center;">
+                <video controls autoplay muted loop style="width: 250px;">
+                    <source src="files/task_video/fail/open_cabinet_put_apple_expert.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>(c) <span style="color: black;">expert</span> <span style="color: red;">fail</span></p>
+            </div>
+            <div style="text-align: center;">
+                <video controls autoplay muted loop style="width: 250px;">
+                    <source src="files/task_video/fail/open_cabinet_put_apple_top.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>(d) <span style="color: black;">top</span> <span style="color: red;">fail</span></p>
+            </div>
+        </div>
 
+        <h3 style="margin-bottom: 0">Pick Bottles</h3>
+        <div style="display: flex; justify-content: space-around; align-items: center; margin-bottom: 2em;">
+            <div style="text-align: center;">
+                <video controls autoplay muted loop style="width: 250px;">
+                    <source src="files/task_video/success/pick_bottles_expert.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>(a) <span style="color: black;">expert</span> <span style="color: green;">success</span></p>
+            </div>
+            <div style="text-align: center;">
+                <video controls autoplay muted loop style="width: 250px;">
+                    <source src="files/task_video/success/pick_bottles_top.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>(b) <span style="color: black;">top</span> <span style="color: green;">success</span></p>
+            </div>
+            <div style="text-align: center;">
+                <video controls autoplay muted loop style="width: 250px;">
+                    <source src="files/task_video/fail/pick_bottles_expert.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>(c) <span style="color: black;">expert</span> <span style="color: red;">fail</span></p>
+            </div>
+            <div style="text-align: center;">
+                <video controls autoplay muted loop style="width: 250px;">
+                    <source src="files/task_video/fail/pick_bottles_top.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>(d) <span style="color: black;">top</span> <span style="color: red;">fail</span></p>
+            </div>
+        </div>
+
+        <h3 style="margin-bottom: 0">Pick Empty Cup</h3>
+        <div style="display: flex; justify-content: space-around; align-items: center; margin-bottom: 2em;">
+            <div style="text-align: center;">
+                <video controls autoplay muted loop style="width: 250px;">
+                    <source src="files/task_video/success/pick_empty_cup_expert.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>(a) <span style="color: black;">expert</span> <span style="color: green;">success</span></p>
+            </div>
+            <div style="text-align: center;">
+                <video controls autoplay muted loop style="width: 250px;">
+                    <source src="files/task_video/success/pick_empty_cup_top.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>(b) <span style="color: black;">top</span> <span style="color: green;">success</span></p>
+            </div>
+            <div style="text-align: center;">
+                <video controls autoplay muted loop style="width: 250px;">
+                    <source src="files/task_video/fail/pick_empty_cup_expert.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>(c) <span style="color: black;">expert</span> <span style="color: red;">fail</span></p>
+            </div>
+            <div style="text-align: center;">
+                <video controls autoplay muted loop style="width: 250px;">
+                    <source src="files/task_video/fail/pick_empty_cup_top.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>(d) <span style="color: black;">top</span> <span style="color: red;">fail</span></p>
+            </div>
+        </div>
+
+        <h3 style="margin-bottom: 0">Put Ball Into Dustpan</h3>
+        <div style="display: flex; justify-content: space-around; align-items: center; margin-bottom: 2em;">
+            <div style="text-align: center;">
+                <video controls autoplay muted loop style="width: 250px;">
+                    <source src="files/task_video/success/put_ball_into_dustpan_expert.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>(a) <span style="color: black;">expert</span> <span style="color: green;">success</span></p>
+            </div>
+            <div style="text-align: center;">
+                <video controls autoplay muted loop style="width: 250px;">
+                    <source src="files/task_video/success/put_ball_into_dustpan_top.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>(b) <span style="color: black;">top</span> <span style="color: green;">success</span></p>
+            </div>
+            <div style="text-align: center;">
+                <video controls autoplay muted loop style="width: 250px;">
+                    <source src="files/task_video/fail/put_ball_into_dustpan_expert.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>(c) <span style="color: black;">expert</span> <span style="color: red;">fail</span></p>
+            </div>
+            <div style="text-align: center;">
+                <video controls autoplay muted loop style="width: 250px;">
+                    <source src="files/task_video/fail/put_ball_into_dustpan_top.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>(d) <span style="color: black;">top</span> <span style="color: red;">fail</span></p>
+            </div>
+        </div>
+        <!-- 继续添加更多任务 -->
+        
+        <div class="container">
+          <div class="thumbnail-container" id="3d-models"></div>
+          <div id="interactive-container">
+            <div id="interactive-viewer"></div>
+            <div id="info-box">
+              <p></p>
+            </div>
+          </div>
+          
+        </div>
+      
+        <script type="importmap">
+          {
+            "imports": {
+              "three": "https://cdn.jsdelivr.net/npm/three@0.150.1/build/three.module.js",
+              "OrbitControls": "https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/controls/OrbitControls.js",
+              "OBJLoader": "https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/loaders/OBJLoader.js",
+              "GLTFLoader": "https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/loaders/GLTFLoader.js",
+              "MTLLoader": "https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/loaders/MTLLoader.js"
+            }
+          }
+        </script>
+      
+        <script type="module">
+          import * as THREE from 'three';
+          import { OrbitControls } from 'OrbitControls';
+          import { OBJLoader } from 'OBJLoader';
+          import { GLTFLoader } from 'GLTFLoader';
+          import { MTLLoader } from 'MTLLoader';
+      
+          document.addEventListener("DOMContentLoaded", function () {
+            const models = ['019_coaste', '022_cup', '024_brush', '028_dustpan', '035_apple',
+            '038_test_tube', '011_Coca_Cola','018_Sprite', '020_hammer_2'];
+            const scalesize = ["1", "1", "0.4"];
+            const container = document.getElementById("3d-models");
+            const interactiveViewer = document.getElementById("interactive-viewer");
+            const infoBox = document.getElementById("info-box");
+      
+            let currentModel = models[0];
+            let interactiveRenderer = null;
+      
+            models.forEach((model, index) => {
+              const viewerDiv = document.createElement("div");
+              viewerDiv.className = "viewer";
+              viewerDiv.dataset.model = model;
+              viewerDiv.addEventListener("click", () => updateInteractiveViewer(model, index, viewerDiv));
+              container.appendChild(viewerDiv);
+              if (index < 6)
+                loadModel_mtl(model, index, viewerDiv);
+              else loadModel_glb(model, index, viewerDiv);
+              // loadModel_glb(model, index, viewerDiv);
+              if (index === 0) {
+                viewerDiv.classList.add("selected");
+                loadInteractiveModel_mtl(model, index, interactiveViewer);
+                updateInfoBox(model, index);
+              }
+            });
+      
+            function updateInteractiveViewer(model, index, selectedViewer) {
+              currentModel = model;
+              const previousSelected = container.querySelector(".viewer.selected");
+              if (previousSelected) {
+                previousSelected.classList.remove("selected");
+              }
+              selectedViewer.classList.add("selected");
+              if (index < 6)
+              loadInteractiveModel_mtl(model, index, interactiveViewer);
+              else loadInteractiveModel_glb(model, index, interactiveViewer);
+              // loadInteractiveModel_glb(model, index, interactiveViewer);
+              updateInfoBox(model, index);
+            }
+      
+            function updateInfoBox(model) {
+              infoBox.innerHTML = `<p>Model: ${model} <br> Size: (H, W, L) <br> Real Object Purchase Link: <a href="https://tianxingchen.github.io">link</a> <br> Files Download link: <a href="https://tianxingchen.github.io">link</a> </p>`;
+            }
+      
+            function loadModel_mtl(model, index, viewer) {
+              const scene = new THREE.Scene();
+              const camera = new THREE.PerspectiveCamera(50, viewer.offsetWidth / viewer.offsetHeight, 0.1, 1000);
+              const renderer = new THREE.WebGLRenderer({ antialias: true });
+              renderer.setSize(viewer.offsetWidth, viewer.offsetHeight);
+              viewer.appendChild(renderer.domElement);
+              renderer.setClearColor(0xCCCCCC);
+      
+              const ambientLight = new THREE.AmbientLight(0x404040, 8);
+              scene.add(ambientLight);
+      
+              const directionalLight = new THREE.DirectionalLight(0xffffff, 8);
+              directionalLight.position.set(0, 1, 1).normalize();
+              scene.add(directionalLight);
+      
+              const mtlLoader = new MTLLoader();
+              mtlLoader.setPath(`files/obj/${model}/`);
+              mtlLoader.load('base.mtl', (materials) => {
+                materials.preload();
+                const objLoader = new OBJLoader();
+                objLoader.setMaterials(materials);
+                objLoader.setPath(`files/obj/${model}/`);
+                objLoader.load('textured.obj', function (object) {
+                  scene.add(object);
+                  object.position.set(0, 0, 0);
+      
+                  const box = new THREE.Box3().setFromObject(object);
+                  const center = box.getCenter(new THREE.Vector3());
+                  const size = box.getSize(new THREE.Vector3());
+      
+                  const maxDim = Math.max(size.x, size.y, size.z);
+                  const scale = 1 / maxDim;
+                  object.scale.set(scalesize[index], scalesize[index], scalesize[index]);
+      
+                  camera.position.set(center.x, center.y + size.z * 2, size.z * 2);
+                  camera.lookAt(center);
+      
+                  function animate() {
+                    requestAnimationFrame(animate);
+                    object.rotation.y += 0.01;
+                    renderer.render(scene, camera);
+                  }
+                  animate();
+                }, undefined, function (error) {
+                  console.error(`Error loading OBJ file: ${error}`);
+                });
+              }, undefined, function (error) {
+                console.error(`Error loading MTL file: ${error}`);
+              });
+      
+              camera.position.z = 2;
+            }
+      
+            function loadModel_glb(model, index, viewer) {
+              const scene = new THREE.Scene();
+              const camera = new THREE.PerspectiveCamera(50, viewer.offsetWidth / viewer.offsetHeight, 0.1, 1000);
+              const renderer = new THREE.WebGLRenderer({ antialias: true });
+              renderer.setSize(viewer.offsetWidth, viewer.offsetHeight);
+              renderer.outputEncoding = THREE.sRGBEncoding;
+              viewer.appendChild(renderer.domElement);
+              renderer.setClearColor(0xCCCCCC);
+      
+              const ambientLight = new THREE.AmbientLight(0x404040, 5);
+              scene.add(ambientLight);
+      
+              const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+              directionalLight.position.set(0, 1, 1).normalize();
+              scene.add(directionalLight);
+      
+              const gltfLoader = new GLTFLoader();
+              gltfLoader.load(`files/glb/${model}/base.glb`, function (gltf) {
+                const object = gltf.scene;
+                scene.add(object);
+                object.position.set(0, 0, 0);
+                object.traverse((node) => {
+                  if (node.isMesh) {
+                    node.material = new THREE.MeshStandardMaterial({
+                      map: node.material.map,
+                      roughness: node.material.roughness,
+                      metalness: node.material.metalness,
+                    });
+                  }
+                });
+                const box = new THREE.Box3().setFromObject(object);
+                const center = box.getCenter(new THREE.Vector3());
+                const size = box.getSize(new THREE.Vector3());
+      
+                const maxDim = Math.max(size.x, size.y, size.z);
+                const scale = 1 / maxDim;
+                object.scale.set(scalesize[index], scalesize[index], scalesize[index]);
+      
+                camera.position.set(center.x, center.y + size.z * 2, size.z * 2);
+                camera.lookAt(center);
+      
+                function animate() {
+                  requestAnimationFrame(animate);
+                  object.rotation.y += 0.01;
+                  renderer.render(scene, camera);
+                }
+                animate();
+              }, undefined, function (error) {
+                console.error(`Error loading GLB file: ${error}`);
+              });
+      
+              camera.position.z = 2;
+            }
+      
+            function loadInteractiveModel_mtl(model, index, viewer) {
+              while (viewer.firstChild) {
+                viewer.removeChild(viewer.firstChild);
+              }
+      
+              if (interactiveRenderer) {
+                interactiveRenderer.dispose();
+                interactiveRenderer.forceContextLoss();
+                interactiveRenderer = null;
+              }
+      
+              const scene = new THREE.Scene();
+              const camera = new THREE.PerspectiveCamera(50, viewer.offsetWidth / viewer.offsetHeight, 0.1, 1000);
+              interactiveRenderer = new THREE.WebGLRenderer({ antialias: true });
+              interactiveRenderer.setSize(viewer.offsetWidth, viewer.offsetHeight);
+              viewer.appendChild(interactiveRenderer.domElement);
+      
+              interactiveRenderer.setClearColor(0xCCCCCC);
+      
+              const controls = new OrbitControls(camera, interactiveRenderer.domElement);
+              controls.enableDamping = true;
+              controls.dampingFactor = 0.25;
+              controls.screenSpacePanning = false;
+              controls.minDistance = 1;
+              controls.maxDistance = 1000;
+      
+              const ambientLight = new THREE.AmbientLight(0x404040, 8);
+              scene.add(ambientLight);
+      
+              const directionalLight = new THREE.DirectionalLight(0xffffff, 8);
+              directionalLight.position.set(0, 1, 1).normalize();
+              scene.add(directionalLight);
+      
+              const mtlLoader = new MTLLoader();
+              mtlLoader.setPath(`files/obj/${model}/`);
+              mtlLoader.load('base.mtl', (materials) => {
+                materials.preload();
+                const objLoader = new OBJLoader();
+                objLoader.setMaterials(materials);
+                objLoader.setPath(`files/obj/${model}/`);
+                objLoader.load('textured.obj', function (object) {
+                  scene.add(object);
+                  object.position.set(0, 0, 0);
+      
+                  const box = new THREE.Box3().setFromObject(object);
+                  const center = box.getCenter(new THREE.Vector3());
+                  const size = box.getSize(new THREE.Vector3());
+      
+                  const maxDim = Math.max(size.x, size.y, size.z);
+                  const scale = 1 / maxDim;
+                  object.scale.set(scalesize[index], scalesize[index], scalesize[index]);
+      
+                  camera.position.set(center.x, center.y, size.z * 2);
+                  camera.lookAt(center);
+      
+                  function animate() {
+                    requestAnimationFrame(animate);
+                    controls.update();
+                    directionalLight.position.copy(camera.position).add(new THREE.Vector3(0, 1, 1));
+                    interactiveRenderer.render(scene, camera);
+                  }
+                  animate();
+                }, undefined, function (error) {
+                  console.error(`Error loading OBJ file: ${error}`);
+                });
+              }, undefined, function (error) {
+                console.error(`Error loading MTL file: ${error}`);
+              });
+      
+              camera.position.z = 2;
+            }
+      
+            function loadInteractiveModel_glb(model, index, viewer) {
+              while (viewer.firstChild) {
+                viewer.removeChild(viewer.firstChild);
+              }
+      
+              if (interactiveRenderer) {
+                interactiveRenderer.dispose();
+                interactiveRenderer.forceContextLoss();
+                interactiveRenderer = null;
+              }
+      
+              const scene = new THREE.Scene();
+              const camera = new THREE.PerspectiveCamera(50, viewer.offsetWidth / viewer.offsetHeight, 0.1, 1000);
+              interactiveRenderer = new THREE.WebGLRenderer({ antialias: true });
+              interactiveRenderer.setSize(viewer.offsetWidth, viewer.offsetHeight);
+              interactiveRenderer.outputEncoding = THREE.sRGBEncoding;
+              viewer.appendChild(interactiveRenderer.domElement);
+      
+              interactiveRenderer.setClearColor(0xCCCCCC);
+      
+              const controls = new OrbitControls(camera, interactiveRenderer.domElement);
+              controls.enableDamping = true;
+              controls.dampingFactor = 0.25;
+              controls.screenSpacePanning = false;
+              controls.minDistance = 1;
+              controls.maxDistance = 1000;
+      
+              const ambientLight = new THREE.AmbientLight(0x404040, 6);
+              scene.add(ambientLight);
+      
+              const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+              directionalLight.position.set(0, 1, 1).normalize();
+              scene.add(directionalLight);
+      
+              const gltfLoader = new GLTFLoader();
+              gltfLoader.load(`files/glb/${model}/base.glb`, function (gltf) {
+                const object = gltf.scene;
+                scene.add(object);
+                object.position.set(0, 0, 0);
+                object.traverse((node) => {
+                  if (node.isMesh) {
+                    node.material = new THREE.MeshStandardMaterial({
+                      map: node.material.map,
+                      roughness: node.material.roughness,
+                      metalness: node.material.metalness,
+                    });
+                  }
+                });
+                const box = new THREE.Box3().setFromObject(object);
+                const center = box.getCenter(new THREE.Vector3());
+                const size = box.getSize(new THREE.Vector3());
+      
+                const maxDim = Math.max(size.x, size.y, size.z);
+                const scale = 1 / maxDim;
+                object.scale.set(scalesize[index], scalesize[index], scalesize[index]);
+      
+                camera.position.set(center.x, center.y, size.z * 2);
+                camera.lookAt(center);
+      
+                function animate() {
+                  requestAnimationFrame(animate);
+                  controls.update();
+                  directionalLight.position.copy(camera.position).add(new THREE.Vector3(0, 1, 1));
+                  interactiveRenderer.render(scene, camera);
+                }
+                animate();
+              }, undefined, function (error) {
+                console.error(`Error loading GLB file: ${error}`);
+              });
+      
+              camera.position.z = 2;
+            }
+      
+          });
+        </script>
+
+        <!-- ----------------------------- -->
         <a class="anchor" id="results-a"></a>
         <h2>Results</h2>
         <h3 style="margin-bottom: 0">Task-wise Performance on LOReL Dataset</h3>
