@@ -709,7 +709,7 @@
               const viewerDiv = document.createElement("div");
               viewerDiv.className = "viewer";
               viewerDiv.dataset.model = model;
-              viewerDiv.addEventListener("click", () => updateInteractiveViewer(model, index, viewerDiv));
+              // viewerDiv.addEventListener("click", () => updateInteractiveViewer(model, index, viewerDiv));
               container.appendChild(viewerDiv);
               if (index < 5)
                 loadModel_mtl(model, index, viewerDiv);
