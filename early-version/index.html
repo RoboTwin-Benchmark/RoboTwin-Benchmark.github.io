@@ -95,7 +95,7 @@
         <div class="bar"></div
         ></a>
         <a class="barWrapper" clear href="#dataset" id="bar5"
-        ><span>Dataset & Digital Twin</span>
+        ><span>Digital Twin</span>
         <div class="bar"></div
         ></a>
         <a class="barWrapper" clear href="#hardware" id="bar6"
@@ -526,9 +526,9 @@
             </div>
           </div>
         
-        <a class="anchor" id="dataset" style="margin-top: 2em"></a>
+        <a class="anchor" id="dataset" style="margin-top: 0em"></a>
         <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%;">
-            <h2>Dataset & Digital Twin</h2>
+            <h2>Digital Twin</h2>
         </div>
         <div style="display: flex; margin: auto; width: 100%; height: auto; align-content: center; align-items: center;  justify-content: center;">
           <img
@@ -536,78 +536,10 @@
           src="files/axis.png"
           />
         </div>
-        <p style="font-family: 'Times New Roman',serif">We assign specific coordinate axes to the functional parts of objects within the model. For instance, for a hammer, one axis is aligned with the hammerhead, identifying the functional part, while another axis indicates the approach direction. This strategic alignment is crucial for automating the calculation of grasp poses, ensuring essential robotic manipulation and tool usage. Grasp poses are computed perpendicular to the surface normal of the functional part along the designated approach direction axis, ensuring correct and efficient tool use with minimal manual intervention.
+        <p style="font-family: 'Times New Roman',serif">We assign specific coordinate axes to the functional parts of objects within the model. For instance, for a hammer, one axis is aligned with the hammerhead, identifying the functional part, while another axis indicates the approach direction. This strategic alignment is crucial for automating the calculation of grasp poses, ensuring essential robotic manipulation and tool usage. Grasp poses are computed perpendicular to the surface normal of the functional part along the designated approach direction axis, ensuring correct and efficient tool use with minimal manual intervention.</p>
+        <h3 style="margin-bottom: 0">Example:</h3>
 
-        </p>
-        <div style="display: flex; justify-content: space-around; align-items: center; width: 100%; ">
-          <!-- 第一个 div 块 -->
-          <div style="display: flex; flex-direction: column; align-items: center; width: 50%;">
-            <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%;">
-              <h3>Ping Pong Sweep</h3>
-            </div>
-            <div style="display: flex; justify-content: space-around; align-items: center;margin-bottom: 2em; width: 100%;">
-              <div style="display: flex; justify-content: space-around; align-items: center;width: 90%;">
-                <div style="text-align: center; width: 33.3%;">
-                    <video controls autoplay muted loop style="width: 100%;">
-                        <source src="files/real_data/ball_sweep_left.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                    <p>(b) <span style="color: black;">left</span></p>
-                </div>
-                  <div style="text-align: center; width: 33.3%;">
-                    <video controls autoplay muted loop style="width: 100%;">
-                        <source src="files/real_data/ball_sweep_top.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                    <p>(c) <span style="color: black;">top</span></p>
-                </div>
-                <div style="text-align: center; width: 33.3%;">
-                  <video controls autoplay muted loop style="width: 100%;">
-                      <source src="files/real_data/ball_sweep_right.mp4" type="video/mp4">
-                      Your browser does not support the video tag.
-                  </video>
-                  <p>(d) <span style="color: black;">right</span></p>
-              </div>
-            </div>
-            
-                <!-- Repeat for other videos, adjusting the content as needed -->
-            </div>
-            
-          </div>
-          <!--  -->
-          <div style="display: flex; flex-direction: column; align-items: center; width: 50%;">
-          <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%;">
-            <h3>Empty Cup Place</h3>
-          </div>
-          <div style="display: flex; justify-content: space-around; align-items: center;margin-bottom: 2em; width: 100%;">
-            <div style="display: flex; justify-content: space-around; align-items: center;width: 90%;">
-              <div style="text-align: center; width: 33.3%;"> 
-                  <video controls autoplay muted loop style="width: 100%;">
-                      <source src="files/real_data/pick_and_place_cup_left.mp4" type="video/mp4">
-                      Your browser does not support the video tag.
-                  </video>
-                  <p>(a) <span style="color: black;">observer</span></p>
-              </div>
-              <div style="text-align: center; width: 33.3%;">
-                  <video controls autoplay muted loop style="width: 100%;">
-                      <source src="files/real_data/pick_and_place_cup_top.mp4" type="video/mp4">
-                      Your browser does not support the video tag.
-                  </video>
-                  <p>(b) <span style="color: black;">left</span></p>
-              </div>
-                <div style="text-align: center; width: 33.3%;">
-                  <video controls autoplay muted loop style="width: 100%;">
-                      <source src="files/real_data/pick_and_place_cup_right.mp4" type="video/mp4">
-                      Your browser does not support the video tag.
-                  </video>
-                  <p>(c) <span style="color: black;">top</span></p>
-              </div>
-          </div>
-        </div>
-        </div>
-        </div>
-
-        <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%; margin-left: -2em; margin-top: -2em;">
+        <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%; margin-left: -2em;">
           <div class="container">
             <div class="thumbnail-container" id="3d-models"></div>
             <div id="interactive-container">
@@ -618,9 +550,140 @@
             </div>
           </div>
         </div>
+        <div style="display: flex; justify-content: space-around; align-items: center; width: 100%; ">
+          <!-- 第一个 div 块 -->
+          <div style="display: flex; flex-direction: column; align-items: center; width: 50%;">
+            <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%;">
+              <h3>Ping Pong Sweep (Real)</h3>
+            </div>
+            <div style="display: flex; justify-content: space-around; align-items: center;margin-bottom: 2em; width: 100%;">
+              <div style="display: flex; justify-content: space-around; align-items: center;width: 90%;">
+                <div style="text-align: center; width: 33.3%;">
+                    <video controls autoplay muted loop style="width: 100%;">
+                        <source src="files/real_data/ball_sweep_left.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <p>(a) <span style="color: black;">left</span></p>
+                </div>
+                  <div style="text-align: center; width: 33.3%;">
+                    <video controls autoplay muted loop style="width: 100%;">
+                        <source src="files/real_data/ball_sweep_top.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <p>(b) <span style="color: black;">top</span></p>
+                </div>
+                <div style="text-align: center; width: 33.3%;">
+                  <video controls autoplay muted loop style="width: 100%;">
+                      <source src="files/real_data/ball_sweep_right.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                  </video>
+                  <p>(c) <span style="color: black;">right</span></p>
+              </div>
+            </div>
+                <!-- Repeat for other videos, adjusting the content as needed -->
+            </div>            
+          </div>
+          <div style="display: flex; flex-direction: column; align-items: center; width: 50%;">
+            <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%;">
+              <h3>Block Sweep (Sim)</h3>
+            </div>
+            <div style="display: flex; justify-content: space-around; align-items: center;margin-bottom: 2em; width: 100%;">
+              <div style="display: flex; justify-content: space-around; align-items: center;width: 90%;">
+                <div style="text-align: center; width: 33.3%;">
+                    <video controls autoplay muted loop style="width: 100%;">
+                        <source src="files/task_video_benchmark/block_sweep_left.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <p>(a) <span style="color: black;">left</span></p>
+                </div>
+                  <div style="text-align: center; width: 33.3%;">
+                    <video controls autoplay muted loop style="width: 100%;">
+                        <source src="files/task_video_benchmark/block_sweep_top.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <p>(b) <span style="color: black;">top</span></p>
+                </div>
+                <div style="text-align: center; width: 33.3%;">
+                  <video controls autoplay muted loop style="width: 100%;">
+                      <source src="files/task_video_benchmark/block_sweep_right.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                  </video>
+                  <p>(c) <span style="color: black;">right</span></p>
+              </div>
+            </div>
+            </div>
+          </div>
+          <!--  -->
+        </div>
+
+
+        <div style="display: flex; justify-content: space-around; align-items: center; width: 100%; margin-top: -3em;">
+          <!--  -->
+          <div style="display: flex; flex-direction: column; align-items: center; width: 50%;">
+          <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%;">
+            <h3>Empty Cup Place (Real)</h3>
+          </div>
+          <div style="display: flex; justify-content: space-around; align-items: center;margin-bottom: 2em; width: 100%;">
+            <div style="display: flex; justify-content: space-around; align-items: center;width: 90%;">
+              <div style="text-align: center; width: 33.3%;"> 
+                  <video controls autoplay muted loop style="width: 100%;">
+                      <source src="files/real_data/pick_and_place_cup_left.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                  </video>
+                  <p>(a) <span style="color: black;">left</span></p>
+              </div>
+              <div style="text-align: center; width: 33.3%;">
+                  <video controls autoplay muted loop style="width: 100%;">
+                      <source src="files/real_data/pick_and_place_cup_top.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                  </video>
+                  <p>(b) <span style="color: black;">top</span></p>
+              </div>
+                <div style="text-align: center; width: 33.3%;">
+                  <video controls autoplay muted loop style="width: 100%;">
+                      <source src="files/real_data/pick_and_place_cup_right.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                  </video>
+                  <p>(c) <span style="color: black;">right</span></p>
+              </div>
+          </div>
+        </div>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: center; width: 50%;">
+          <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%;">
+            <h3>Empty Cup Place (Sim)</h3>
+          </div>
+          <div style="display: flex; justify-content: space-around; align-items: center;margin-bottom: 2em; width: 100%;">
+            <div style="display: flex; justify-content: space-around; align-items: center;width: 90%;">
+              <div style="text-align: center; width: 33.3%;">
+                  <video controls autoplay muted loop style="width: 100%;">
+                      <source src="files/task_video_benchmark/pick_empty_cup_left.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                  </video>
+                  <p>(a) <span style="color: black;">left</span></p>
+              </div>
+                <div style="text-align: center; width: 33.3%;">
+                  <video controls autoplay muted loop style="width: 100%;">
+                      <source src="files/task_video_benchmark/pick_empty_cup_top.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                  </video>
+                  <p>(b) <span style="color: black;">top</span></p>
+              </div>
+              <div style="text-align: center; width: 33.3%;">
+                <video controls autoplay muted loop style="width: 100%;">
+                    <source src="files/task_video_benchmark/pick_empty_cup_right.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>(c) <span style="color: black;">right</span></p>
+            </div>
+          </div>
+        </div>
+        </div>
+        </div>
+
 
         <!-- Hardware -->
-        <a class="anchor" id="hardware" style="margin-top: 3em"></a>
+        <a class="anchor" id="hardware" style="margin-top: 0em"></a>
         <section class="details" style="text-align: justify;">
           <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%;">
             <h2 style="margin: 0;">Hardware Platform</h2>
@@ -632,7 +695,7 @@
 
         
 
-      <a class="anchor" id="experiment" style="margin-top: 0em"></a>
+      <a class="anchor" id="experiment" style="margin-top: -2em"></a>
       <section class="details" style="text-align: justify;">
         <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%;">
           <h2>Experiment</h2>
@@ -887,7 +950,7 @@
         import { MTLLoader } from 'MTLLoader';
     
         document.addEventListener("DOMContentLoaded", function () {
-          const models = ['019_coaste', '022_cup', '024_brush', '028_dustpan'];
+          const models = ['024_brush', '028_dustpan', '019_coaste', '022_cup'];
           const scalesize = ["1.2", "1", "0.7", "1.2", "1", "0.5", "0.5", "1"];
           const container = document.getElementById("3d-models");
           const interactiveViewer = document.getElementById("interactive-viewer");
