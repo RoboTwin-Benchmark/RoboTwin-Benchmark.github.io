@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/html">
   <style>
+    .video-container {
+        display: flex; /* 使用Flexbox布局 */
+        justify-content: center; /* 水平居中 */
+        margin-bottom: 20px;
+    }
+      .task-title {
+          text-align: center;
+          margin: 20px 0;
+      }
     .container {
       width: 90%;
       padding: 1; /* 去除左右内边距 */
@@ -94,24 +103,29 @@
         ><span>Benchmark</span>
         <div class="bar"></div
         ></a>
-        <a class="barWrapper" clear href="#dataset" id="bar5"
+        <a class="barWrapper" clear href="#twin" id="bar5"
         ><span>Digital Twin</span>
         <div class="bar"></div
         ></a>
-        <a class="barWrapper" clear href="#hardware" id="bar6"
+        <a class="barWrapper" clear href="#dataset" id="bar6"
+        ><span>Dataset
+        </span>
+        <div class="bar"></div
+          ></a>
+        <a class="barWrapper" clear href="#hardware" id="bar7"
         ><span>Hardware Platform
         </span>
         <div class="bar"></div
           ></a>
-        <a class="barWrapper" clear href="#experiment" id="bar7"
+        <a class="barWrapper" clear href="#experiment" id="bar8"
           ><span>Experiment</span>
           <div class="bar"></div
         ></a>
-        <a class="barWrapper" clear href="#Bibtex" id="bar8"
+        <a class="barWrapper" clear href="#Bibtex" id="bar9"
           ><span>Bibtex</span>
           <div class="bar"></div
         ></a>
-        <a class="barWrapper" clear href="#deployment" id="bar9"
+        <a class="barWrapper" clear href="#deployment" id="bar10"
           ><span>Video Show of DP3 deployment</span>
           <div class="bar"></div
         ></a>
@@ -187,6 +201,19 @@
             <li><sup>5</sup> Institute of Automation, Chinese Academy of Sciences</li>
           </ul>
         </section>
+        <div class="task" id="task3">
+          <h2 class="task-title">Task3: Empty Cup Handover</h2>
+          <div class="video-container">
+              <video controls autoplay muted loop>
+                  <source src="./videos/hand_over_cup_front_episode1.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+              </video>
+              <video controls autoplay muted loop>
+                  <source src="./videos/hand_over_cup_right_episode1.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+              </video>
+          </div>
+      </div>
         <section class="corresponding">
           <p>
             <sup>*</sup>Equal Contribution, <sup>&#8224;</sup>Corresponding authors
@@ -278,6 +305,7 @@
         <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%;">
           <h2>Benchmark</h2>
         </div>
+        
         <p style="font-family: 'Times New Roman',serif">To further research and development in this area, we introduce a comprehensive benchmark specifically designed to assess dual-arm robots in a variety of scenarios. This benchmark encompasses a diverse set of tasks, each presenting unique challenges which are critical for assessing the dexterity, coordination, and operational efficiency of robotic arms in a simulated environment. The tasks range from simple object manipulation to complex actions that require synchronized movements of both arms.</p>
         <div style="display: flex; justify-content: space-around; align-items: center; width: 100%; ">
           <!-- 第一个 div 块 -->
@@ -526,7 +554,7 @@
             </div>
           </div>
         
-        <a class="anchor" id="dataset" style="margin-top: 0em"></a>
+        <a class="anchor" id="twin" style="margin-top: 0em"></a>
         <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%;">
             <h2>Digital Twin</h2>
         </div>
@@ -681,9 +709,16 @@
         </div>
         </div>
 
+        <a class="anchor" id="dataset" style="margin-top: 0em"></a>
+        <section class="details" style="text-align: justify;">
+          <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%;">
+            <h2 style="margin: 0;">Dataset <a href="./dataset_show/index.html" target="_blank">[Video Show]</a></h2>
+            <img src="files/dataset.png" style="width: 50%; margin-top: 20px; margin-bottom: 10px;"/>
+          </div>
+
 
         <!-- Hardware -->
-        <a class="anchor" id="hardware" style="margin-top: 0em"></a>
+        <a class="anchor" id="hardware" style="margin-top: 2em"></a>
         <section class="details" style="text-align: justify;">
           <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%;">
             <h2 style="margin: 0;">Hardware Platform</h2>
@@ -927,6 +962,7 @@
               <p>(d) <span style="color: black;">top</span> <span style="color: red;">fail</span></p>
           </div>
       </div>
+
 
 
 
