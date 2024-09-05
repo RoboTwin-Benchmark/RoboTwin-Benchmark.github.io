@@ -217,11 +217,11 @@
             <a href="" rel="noreferrer" target="_blank">
               <li>
                 <span class="icon"> <img src="./public/paper.svg" /> </span
-                ><span>Paper</span>
+                ><span>arXiv</span>
               </li>
             </a>
             <a
-              href=""
+              href="https://arxiv.org/abs/2409.02920"
               rel="noreferrer"
               target="_blank"
             >
@@ -266,7 +266,7 @@
         <a class="anchor" id="abstract-a"></a>
         <h2>Abstract</h2>
         <p class="abstract" style="font-family: 'Times New Roman', Arial; text-align: justify">
-          Effective collaboration of dual-arm robots and their tool use capabilities are increasingly important areas in the advancement of robotics. These skills play a significant role in expanding robots' ability to operate in diverse real-world environments. However, progress is impeded by the scarcity of specialized training data. This paper introduces RoboTwin, a novel benchmark dataset combining real-world teleoperated data with synthetic data from digital twins, designed for dual-arm robotic scenarios. Using the COBOT Magic platform, we have collected diverse data on tool usage, human-robot interaction, and mobile manipulation. We present a cost-effective approach to creating digital twins using AI-generated content, transforming 2D images into detailed 3D models. Furthermore, we utilize large language models to generate expert-level training data and task-specific pose sequences oriented towards functionality. Our key contributions are: 1) the RoboTwin benchmark dataset, 2) an efficient real-to-simulation pipeline, and 3) the use of language models for automatic expert-level data generation. These advancements are designed to address the shortage of robotic training data, potentially accelerating the development of more capable and versatile robotic systems for a wide range of real-world applications.
+          Effective collaboration of dual-arm robots and their tool use capabilities are increasingly important areas in the advancement of robotics. These skills play a significant role in expanding robots' ability to operate in diverse real-world environments. However, progress is impeded by the scarcity of specialized training data. This paper introduces RoboTwin, a novel benchmark dataset combining real-world teleoperated data with synthetic data from digital twins, designed for dual-arm robotic scenarios. Using the COBOT Magic platform, we have collected diverse data on tool usage and human-robot interaction. We present a  innovative approach to creating digital twins using AI-generated content, transforming 2D images into detailed 3D models. Furthermore, we utilize large language models to generate expert-level training data and task-specific pose sequences oriented toward functionality. Our key contributions are: 1) the RoboTwin benchmark dataset, 2) an efficient real-to-simulation pipeline, and 3) the use of language models for automatic expert-level data generation. These advancements are designed to address the shortage of robotic training data, potentially accelerating the development of more capable and versatile robotic systems for a wide range of real-world applications.
         </p>
       </section>
 
@@ -866,7 +866,15 @@
           <h2>Bibtex</h2>
         </div>
         <pre>
-      <code>Coming Soon</code></pre>
+      <code>@misc{mu2024robotwindualarmrobotbenchmark,
+        title={RoboTwin: Dual-Arm Robot Benchmark with Generative Digital Twins (early version)}, 
+        author={Yao Mu and Tianxing Chen and Shijia Peng and Zanxin Chen and Zeyu Gao and Yude Zou and Lunkai Lin and Zhiqiang Xie and Ping Luo},
+        year={2024},
+        eprint={2409.02920},
+        archivePrefix={arXiv},
+        primaryClass={cs.RO},
+        url={https://arxiv.org/abs/2409.02920}, 
+    }</code></pre>
       </section>
       <br/>
 
@@ -1397,12 +1405,12 @@
     
         });
       </script>
-<!--      <section class="acknowledgements">-->
-<!--        <h2>Acknowledgements</h2>-->
-<!--        <p style="font-family: 'Times New Roman', Arial;">-->
-<!--          This paper is partially supported by the National Key R&D Program of China No.2022ZD0161000 and the General Research Fund of Hong Kong No.17200622. Special thanks to additional members of the HKU-MMLab for writing feedback.-->
-<!--        </p>-->
-<!--      </section>-->
+     <section class="acknowledgements">
+       <h2>Acknowledgements</h2>
+       <p style="font-family: 'Times New Roman', Arial;">
+        The authors extend their profound gratitude to D-robotics for their invaluable support in supplying the necessary cloud computing resources that facilitated the execution of this research. Furthermore, our sincere appreciation is extended to Deeoms for their contribution in providing essential model support, which was pivotal to the successful completion of this study.
+        </p> 
+      </section>
     </main>
   </body>
 </html>
