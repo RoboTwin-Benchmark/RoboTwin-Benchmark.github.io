@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+  <style>
+    .video-container {
+        display: flex; /* 使用Flexbox布局 */
+        justify-content: center; /* 水平居中 */
+        margin-bottom: 20px;
+    }
+      .task-title {
+          text-align: center;
+          margin: 20px 0;
+      }
+    .container {
+      width: 90%;
+      padding: 1; /* 去除左右内边距 */
+      margin: 20px 0; /* 水平居中 */
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+    }
+
+    .thumbnail-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+    }
+  
+    .thumbnail-container .viewer {
+      /* width: 100%; */
+      aspect-ratio: 1; /* 强制保持正方形比例 */
+      background: #ccc; /* 灰色背景 */
+      position: relative;
+      border: 2px solid transparent;
+      transition: border-color 0.3s;
+    }
+  
+    .thumbnail-container .viewer.selected {
+      border-color: black;
+    }
+  
+    #interactive-container {
+      display: none; /* 默认隐藏 */
+      justify-content: space-between;
+    }
+
+    #interactive-viewer, #info-box {
+      width: 50%;
+      aspect-ratio: 1; /* 强制保持正方形比例 */
+      background: #ccc;
+      margin: 20px 0; /* 顶部和底部的间距 */
+      float: left; /* 左对齐 */
+      position: relative;
+    }
+
+    #info-box {
+      background: #f0f0f0; /* 更浅的背景颜色区分内容 */
+      margin: 20px 0; /* 顶部和底部的间距 */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+  
+    </style>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="description"
+      content="RoboTwin"
+    />
+    <meta name="keywords" content="Diffusion Model, Skill Discovery, Trajectory Generation, Multitask Learning" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>
+        RoboTwin: Dual-Arm Robot Benchmark with Generative Digital Twins
+    </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link href="./public/index.css" rel="stylesheet" />
+    <link href="./public/media.css" rel="stylesheet" />
+    <link href="./public/sidebars.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="./public/js/base.js"></script>
+  </head>
+
+  <body>
+    <div class="sidebarsWrapper">
+      <div class="sidebars">
+        <a class="barWrapper" clear href="#abstract-a" id="bar2"
+          ><span>Abstract</span>
+          <div class="bar"></div
+        ></a>
+        <a class="barWrapper" clear href="#tr2-a" id="bar3"
+          ><span>Pipeline</span>
+          <div class="bar"></div
+        ></a>
+        <a class="barWrapper" clear href="#Benchmark" id="bar4"
+        ><span>Benchmark</span>
+        <div class="bar"></div
+        ></a>
+        <a class="barWrapper" clear href="#twin" id="bar5"
+        ><span>Digital Twin</span>
+        <div class="bar"></div
+        ></a>
+        <a class="barWrapper" clear href="#dataset" id="bar6"
+        ><span>Dataset
+        </span>
+        <div class="bar"></div
+          ></a>
+        <a class="barWrapper" clear href="#hardware" id="bar7"
+        ><span>Hardware Platform
+        </span>
+        <div class="bar"></div
+          ></a>
+        <a class="barWrapper" clear href="#experiment" id="bar8"
+          ><span>Experiment</span>
+          <div class="bar"></div
+        ></a>
+        <a class="barWrapper" clear href="#Bibtex" id="bar9"
+          ><span>Bibtex</span>
+          <div class="bar"></div
+        ></a>
+        <a class="barWrapper" clear href="#deployment" id="bar10"
+          ><span>Video Show of DP3 deployment</span>
+          <div class="bar"></div
+        ></a>
+      </div>
+    </div>
+    <main class="content">
+      <section class="heading" style="text-align: center!important;">
+        <h1 class="title">
+          RoboTwin: Dual-Arm Robot Benchmark with Generative Digital Twins<br><br>
+          <img src="files/institute.png" style="width: 100%; height: auto;">  
+        </h1>
+        
+        <section class="authors">
+          <ul>
+            <li>
+              <span
+                ><a
+                  href="https://yaomarkmu.github.io/"
+                  rel="noreferrer"
+                  target="_blank"
+              >Yao Mu</a
+                > <sup>* 1 3</sup></span
+              >,
+              <span
+                ><a
+                  href="https://tianxingchen.github.io/"
+                  rel="noreferrer"
+                  target="_blank"
+              >Tianxing Chen</a
+                > <sup>* 1 3 4</sup></span
+              >,
+            <span
+                >Zanxin Chen <sup>* 2 4</sup></span
+            >,
+            <span
+                >Shijia Peng <sup>* 2 4</sup></span
+              >,
+            <br>
+            <span
+              >Zeyu Gao <sup>5</sup></span
+            >,
+
+            <span
+              >Yude Zou <sup>4</sup></span
+            >,
+
+            <span
+              >Lunkai Lin <sup>2</sup></span
+            >,
+
+            <span
+              >Zhiqiang Xie <sup>2</sup></span
+            >,
+
+            
+            <span
+              ><a
+                href="http://luoping.me/"
+                rel="noreferrer"
+                target="_blank"
+            >Ping Luo</a
+              ><sup>&#8224; 1</sup></span
+            >
+            
+            </li>
+        </section>
+        <section class="affiliations">
+          <ul>
+            <li><sup>1</sup> The University of Hong Kong,</li>
+            <li><sup>2</sup> AgileX Robotics,</li>
+            <li><sup>3</sup> Shanghai AI Laboratory,</li><br>
+            <li><sup>4</sup> Shenzhen University,</li>
+            <li><sup>5</sup> Institute of Automation, Chinese Academy of Sciences</li>
+          </ul>
+        </section>
+        <section class="corresponding">
+          <p>
+            <sup>*</sup>Equal Contribution, <sup>&#8224;</sup>Corresponding authors
+          </p>
+          <p>
+            CVPR 2025 Challenge: <a href="https://robotwin-benchmark.github.io/cvpr-2025-challenge/"><strong><i>RoboTwin Dual-Arm Collaboration Challenge</i></strong></a>
+          </p>
+          <p>
+            1.0 Version: <strong style="color:red"><i>CVPR 2025 (Highlight)</i></strong>
+          </p>
+          <p>
+            Early Version: <strong style="color:red"><i>ECCV Workshop 2024 (Best Paper)</i></strong>
+          </p>
+        </section>
+        <section class="links">
+          <ul>
+            <a href="https://arxiv.org/abs/2504.13059" rel="noreferrer" target="_blank">
+              <li>
+                <span class="icon"> <img src="./public/paper.svg" /> </span
+                ><span>arXiv</span>
+              </li>
+            </a>
+            <a
+              href="https://github.com/TianxingChen/RoboTwin"
+              rel="noreferrer"
+              target="_blank"
+            >
+              <li>
+                <span class="icon">
+                  <img src="./public/github.svg" />
+                </span>
+                <span>Code</span>
+              </li>
+            </a>
+            <!-- <a
+              href="https://www.youtube.com/watch?v=veQI1iuvYZA"
+              rel="noreferrer"
+              target="_blank"
+             >
+               <li><span class="icon"> <img src="./public/video.svg"/> </span
+                ><span>Video</span>
+               </li>
+             </a> -->
+            <!-- <a
+              href="https://huggingface.co/datasets/YaoMarkMu/robotwin_dataset/tree/main"
+              rel="noreferrer"
+              target="_blank"
+            >
+              <li>
+                <span class="icon"> <img src="./public/database2.svg" style="width: 100%;filter: invert(100%); stroke-width: 200%; padding-bottom:2.5px"/> </span
+                ><span>Dataset</span>
+              </li>
+            </a> -->
+            <!-- <a
+              href="https://cvpr.thecvf.com/media/PosterPDFs/CVPR%202024/29481.png?t=1715449289.7960775"
+              rel="noreferrer"
+              target="_blank"
+            >
+              <li>
+                <span class="icon"> <img src="./public/poster.svg" style="width: 120%;filter: invert(100%); stroke-width: 200%"/> </span
+                ><span>Poster</span>
+              </li>
+            </a> -->
+          </ul>
+        </section>
+        <a class="anchor" id="abstract-a"></a>
+        <div>The RoboTwin leaderboard is powered by the D-Robotics cloud system.</div>
+        <img src="./files/d-robotics.jpg" style="width: 10%">
+        <h2>Abstract</h2>
+        <p class="abstract" style="font-family: 'Times New Roman', Arial; text-align: justify">
+          Effective collaboration of dual-arm robots and their tool use capabilities are increasingly important areas in the advancement of robotics. These skills play a significant role in expanding robots' ability to operate in diverse real-world environments. However, progress is impeded by the scarcity of specialized training data. This paper introduces RoboTwin, a novel benchmark dataset combining real-world teleoperated data with synthetic data from digital twins, designed for dual-arm robotic scenarios. Using the COBOT Magic platform, we have collected diverse data on tool usage and human-robot interaction. We present a  innovative approach to creating digital twins using AI-generated content, transforming 2D images into detailed 3D models. Furthermore, we utilize large language models to generate expert-level training data and task-specific pose sequences oriented toward functionality. Our key contributions are: 1) the RoboTwin benchmark dataset, 2) an efficient real-to-simulation pipeline, and 3) the use of language models for automatic expert-level data generation. These advancements are designed to address the shortage of robotic training data, potentially accelerating the development of more capable and versatile robotic systems for a wide range of real-world applications.
+        </p>
+      </section>
+
+      <a class="anchor" id="tr2-a"></a>
+      <section class="details" style="text-align: justify;">
+        <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%;">
+          <h2>RoboTwin's AIGC & Expert Data Generation pipeline</h2>
+        </div>
+        <div style="display: flex; margin: auto; width: 100%; height: auto; align-content: center; align-items: center;  justify-content: center;">
+          <img
+          style="width: 80%; height: auto"
+          src="files/main.png"
+          />
+        </div>
+        <br />
+        <p style="font-family: 'Times New Roman',serif"> <strong>RoboTwin's AIGC & Expert Data Generation pipeline</strong> RoboTwin's pipeline for AIGC and expert data generation involves automatically extracting object segmentation and textual descriptions from a single RGB photo. This is followed by generating 3D geometry, surface normals, wireframes, and texture maps to create a high-fidelity simulation object. With the object's surface normal and pose information, we can decompose and generate grasping postures. Furthermore, we utilize the capabilities of large models to generate expert data for tasks in a zero-shot manner.
+        </p>
+        <!-- ----------------------------- -->
+        <a class="anchor" id="tasks-a"></a>
+
+        
+        <a class="anchor" id="Benchmark"></a>
+        <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%;">
+          <h2>Benchmark</h2>
+        </div>
+        
+        <p style="font-family: 'Times New Roman',serif">To further research and development in this area, we introduce a comprehensive benchmark specifically designed to assess dual-arm robots in a variety of scenarios. This benchmark encompasses a diverse set of tasks, each presenting unique challenges which are critical for assessing the dexterity, coordination, and operational efficiency of robotic arms in a simulated environment. The tasks range from simple object manipulation to complex actions that require synchronized movements of both arms.</p>
+        <div style="display: flex; justify-content: space-around; align-items: center; width: 100%; ">
+          <!-- 第一个 div 块 -->
+          <div style="display: flex; flex-direction: column; align-items: center; width: 50%;">
+            <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%;">
+              <h3>1. Block Hammer Beat (Expert)</h3>
+            </div>
+            <div style="display: flex; justify-content: space-around; align-items: center;margin-bottom: 2em; width: 100%;">
+              <div style="display: flex; justify-content: space-around; align-items: center;width: 90%;">
+                <div style="text-align: center; width: 25%;"> 
+                    <video controls autoplay muted loop style="width: 100%;">
+                        <source src="files/task_video_benchmark/block_hammer_beat_expert.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <p>(a) <span style="color: black;">observer</span></p>
+                </div>
+                <div style="text-align: center; width: 25%;">
+                    <video controls autoplay muted loop style="width: 100%;">
+                        <source src="files/task_video_benchmark/block_hammer_beat_left.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <p>(b) <span style="color: black;">left</span></p>
+                </div>
+                  <div style="text-align: center; width: 25%;">
+                    <video controls autoplay muted loop style="width: 100%;">
+                        <source src="files/task_video_benchmark/block_hammer_beat_top.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <p>(c) <span style="color: black;">top</span></p>
+                </div>
+                <div style="text-align: center; width: 25%;">
+                  <video controls autoplay muted loop style="width: 100%;">
+                      <source src="files/task_video_benchmark/block_hammer_beat_right.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                  </video>
+                  <p>(d) <span style="color: black;">right</span></p>
+              </div>
+            </div>
+            
+                <!-- Repeat for other videos, adjusting the content as needed -->
+            </div>
+            
+          </div>
+          <!--  -->
+          <div style="display: flex; flex-direction: column; align-items: center; width: 50%;">
+          <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%;">
+            <h3>2. Empty Cup Place (Expert)</h3>
+          </div>
+          <div style="display: flex; justify-content: space-around; align-items: center;margin-bottom: 2em; width: 100%;">
+            <div style="display: flex; justify-content: space-around; align-items: center;width: 90%;">
+              <div style="text-align: center; width: 25%;"> 
+                  <video controls autoplay muted loop style="width: 100%;">
+                      <source src="files/task_video_benchmark/pick_empty_cup_expert.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                  </video>
+                  <p>(a) <span style="color: black;">observer</span></p>
+              </div>
+              <div style="text-align: center; width: 25%;">
+                  <video controls autoplay muted loop style="width: 100%;">
+                      <source src="files/task_video_benchmark/pick_empty_cup_left.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                  </video>
+                  <p>(b) <span style="color: black;">left</span></p>
+              </div>
+                <div style="text-align: center; width: 25%;">
+                  <video controls autoplay muted loop style="width: 100%;">
+                      <source src="files/task_video_benchmark/pick_empty_cup_top.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                  </video>
+                  <p>(c) <span style="color: black;">top</span></p>
+              </div>
+              <div style="text-align: center; width: 25%;">
+                <video controls autoplay muted loop style="width: 100%;">
+                    <source src="files/task_video_benchmark/pick_empty_cup_right.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>(d) <span style="color: black;">right</span></p>
+            </div>
+          </div>
+        </div>
+        </div>
+        </div>
+
+
+        <div style="display: flex; justify-content: space-around; align-items: center; width: 100%;margin-top: -3em;">
+          <!-- 第一个 div 块 -->
+          <div style="display: flex; flex-direction: column; align-items: center; width: 50%;">
+            <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%; ">
+              <h3>3. Dual-Bottles Pick (Expert)</h3>
+            </div>
+            <div style="display: flex; justify-content: space-around; align-items: center;margin-bottom: 2em; width: 100%;">
+              <div style="display: flex; justify-content: space-around; align-items: center;width: 90%;">
+                <div style="text-align: center; width: 25%;"> 
+                    <video controls autoplay muted loop style="width: 100%;">
+                        <source src="files/task_video_benchmark/dual_bottles_pick_expert.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <p>(a) <span style="color: black;">observer</span></p>
+                </div>
+                <div style="text-align: center; width: 25%;">
+                    <video controls autoplay muted loop style="width: 100%;">
+                        <source src="files/task_video_benchmark/dual_bottles_pick_left.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <p>(b) <span style="color: black;">left</span></p>
+                </div>
+                  <div style="text-align: center; width: 25%;">
+                    <video controls autoplay muted loop style="width: 100%;">
+                        <source src="files/task_video_benchmark/dual_bottles_pick_top.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <p>(c) <span style="color: black;">top</span></p>
+                </div>
+                <div style="text-align: center; width: 25%;">
+                  <video controls autoplay muted loop style="width: 100%;">
+                      <source src="files/task_video_benchmark/dual_bottles_pick_right.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                  </video>
+                  <p>(d) <span style="color: black;">right</span></p>
+              </div>
+            </div>
+            </div>
+    
+            
+          </div>
+          <!--  -->
+          <div style="display: flex; flex-direction: column; align-items: center; width: 50%;">
+            <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%;">
+              <h3>4. Block Sweep (Expert)</h3>
+            </div>
+            <div style="display: flex; justify-content: space-around; align-items: center;margin-bottom: 2em; width: 100%;">
+              <div style="display: flex; justify-content: space-around; align-items: center;width: 90%;">
+                <div style="text-align: center; width: 25%;"> 
+                    <video controls autoplay muted loop style="width: 100%;">
+                        <source src="files/task_video_benchmark/block_sweep_expert.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <p>(a) <span style="color: black;">observer</span></p>
+                </div>
+                <div style="text-align: center; width: 25%;">
+                    <video controls autoplay muted loop style="width: 100%;">
+                        <source src="files/task_video_benchmark/block_sweep_left.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <p>(b) <span style="color: black;">left</span></p>
+                </div>
+                  <div style="text-align: center; width: 25%;">
+                    <video controls autoplay muted loop style="width: 100%;">
+                        <source src="files/task_video_benchmark/block_sweep_top.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <p>(c) <span style="color: black;">top</span></p>
+                </div>
+                <div style="text-align: center; width: 25%;">
+                  <video controls autoplay muted loop style="width: 100%;">
+                      <source src="files/task_video_benchmark/block_sweep_right.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                  </video>
+                  <p>(d) <span style="color: black;">right</span></p>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-around; align-items: center; width: 100%; margin-top: -3em;">
+          <!-- 第一个 div 块 -->
+          <div style="display: flex; flex-direction: column; align-items: center; width: 50%;">
+            <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%;">
+              <h3>5. Apple Cabinet Storage (Expert)</h3>
+            </div>
+    
+            <div style="display: flex; justify-content: space-around; align-items: center;margin-bottom: 2em; width: 100%;">
+              <div style="display: flex; justify-content: space-around; align-items: center;width: 90%;">
+                <div style="text-align: center; width: 25%;"> 
+                    <video controls autoplay muted loop style="width: 100%;">
+                        <source src="files/task_video_benchmark/apple_cabinet_storage_expert.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <p>(a) <span style="color: black;">observer</span></p>
+                </div>
+                <div style="text-align: center; width: 25%;">
+                    <video controls autoplay muted loop style="width: 100%;">
+                        <source src="files/task_video_benchmark/apple_cabinet_storage_left.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <p>(b) <span style="color: black;">left</span></p>
+                </div>
+                  <div style="text-align: center; width: 25%;">
+                    <video controls autoplay muted loop style="width: 100%;">
+                        <source src="files/task_video_benchmark/apple_cabinet_storage_top.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <p>(c) <span style="color: black;">top</span></p>
+                </div>
+                <div style="text-align: center; width: 25%;">
+                  <video controls autoplay muted loop style="width: 100%;">
+                      <source src="files/task_video_benchmark/apple_cabinet_storage_right.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                  </video>
+                  <p>(d) <span style="color: black;">right</span></p>
+              </div>
+            </div>
+            </div>
+            
+          </div>
+          <!--  -->
+          <div style="display: flex; flex-direction: column; align-items: center; width: 50%;">
+              <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%;">
+                <h3>6. Block Handover (Expert)</h3>
+              </div>
+      
+              <div style="display: flex; justify-content: space-around; align-items: center;margin-bottom: 2em; width: 100%;">
+                <div style="display: flex; justify-content: space-around; align-items: center;width: 90%;">
+                  <div style="text-align: center; width: 25%;"> 
+                      <video controls autoplay muted loop style="width: 100%;">
+                          <source src="files/task_video_benchmark/block_handover_expert.mp4" type="video/mp4">
+                          Your browser does not support the video tag.
+                      </video>
+                      <p>(a) <span style="color: black;">observer</span></p>
+                  </div>
+                  <div style="text-align: center; width: 25%;">
+                      <video controls autoplay muted loop style="width: 100%;">
+                          <source src="files/task_video_benchmark/block_handover_left.mp4" type="video/mp4">
+                          Your browser does not support the video tag.
+                      </video>
+                      <p>(b) <span style="color: black;">left</span></p>
+                  </div>
+                    <div style="text-align: center; width: 25%;">
+                      <video controls autoplay muted loop style="width: 100%;">
+                          <source src="files/task_video_benchmark/block_handover_top.mp4" type="video/mp4">
+                          Your browser does not support the video tag.
+                      </video>
+                      <p>(c) <span style="color: black;">top</span></p>
+                  </div>
+                  <div style="text-align: center; width: 25%;">
+                    <video controls autoplay muted loop style="width: 100%;">
+                        <source src="files/task_video_benchmark/block_handover_right.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <p>(d) <span style="color: black;">right</span></p>
+                </div>
+              </div>
+              </div>
+              
+            </div>
+          </div>
+        
+        <a class="anchor" id="twin" style="margin-top: 0em"></a>
+        <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%;">
+            <h2>Digital Twin</h2>
+            <img src="files/axis.png" style="width: 80%; margin-top: 20px; margin-bottom: 10px;"/>
+        </div>
+        
+        <p style="font-family: 'Times New Roman',serif">We assign specific coordinate axes to the functional parts of objects within the model. For instance, for a hammer, one axis is aligned with the hammerhead, identifying the functional part, while another axis indicates the approach direction. This strategic alignment is crucial for automating the calculation of grasp poses, ensuring essential robotic manipulation and tool usage. Grasp poses are computed perpendicular to the surface normal of the functional part along the designated approach direction axis, ensuring correct and efficient tool use with minimal manual intervention.</p>
+        <h3 style="margin-bottom: 0">Example:</h3>
+
+        <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%; margin-left: -2em;">
+          <div class="container">
+            <div class="thumbnail-container" id="3d-models"></div>
+            <div id="interactive-container">
+              <div id="interactive-viewer"></div>
+              <div id="info-box">
+                <p></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="display: flex; justify-content: space-around; align-items: center; width: 100%; ">
+          <!-- 第一个 div 块 -->
+          <div style="display: flex; flex-direction: column; align-items: center; width: 50%;">
+            <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%;">
+              <h3>Ping Pong Sweep (Real)</h3>
+            </div>
+            <div style="display: flex; justify-content: space-around; align-items: center;margin-bottom: 2em; width: 100%;">
+              <div style="display: flex; justify-content: space-around; align-items: center;width: 90%;">
+                <div style="text-align: center; width: 33.3%;">
+                    <video controls autoplay muted loop style="width: 100%;">
+                        <source src="files/real_data/ball_sweep_left.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <p>(a) <span style="color: black;">left</span></p>
+                </div>
+                  <div style="text-align: center; width: 33.3%;">
+                    <video controls autoplay muted loop style="width: 100%;">
+                        <source src="files/real_data/ball_sweep_top.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <p>(b) <span style="color: black;">top</span></p>
+                </div>
+                <div style="text-align: center; width: 33.3%;">
+                  <video controls autoplay muted loop style="width: 100%;">
+                      <source src="files/real_data/ball_sweep_right.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                  </video>
+                  <p>(c) <span style="color: black;">right</span></p>
+              </div>
+            </div>
+                <!-- Repeat for other videos, adjusting the content as needed -->
+            </div>            
+          </div>
+          <div style="display: flex; flex-direction: column; align-items: center; width: 50%;">
+            <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%;">
+              <h3>Block Sweep (Sim)</h3>
+            </div>
+            <div style="display: flex; justify-content: space-around; align-items: center;margin-bottom: 2em; width: 100%;">
+              <div style="display: flex; justify-content: space-around; align-items: center;width: 90%;">
+                <div style="text-align: center; width: 33.3%;">
+                    <video controls autoplay muted loop style="width: 100%;">
+                        <source src="files/task_video_benchmark/block_sweep_left.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <p>(a) <span style="color: black;">left</span></p>
+                </div>
+                  <div style="text-align: center; width: 33.3%;">
+                    <video controls autoplay muted loop style="width: 100%;">
+                        <source src="files/task_video_benchmark/block_sweep_top.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <p>(b) <span style="color: black;">top</span></p>
+                </div>
+                <div style="text-align: center; width: 33.3%;">
+                  <video controls autoplay muted loop style="width: 100%;">
+                      <source src="files/task_video_benchmark/block_sweep_right.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                  </video>
+                  <p>(c) <span style="color: black;">right</span></p>
+              </div>
+            </div>
+            </div>
+          </div>
+          <!--  -->
+        </div>
+
+
+        <div style="display: flex; justify-content: space-around; align-items: center; width: 100%; margin-top: -3em;">
+          <!--  -->
+          <div style="display: flex; flex-direction: column; align-items: center; width: 50%;">
+          <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%;">
+            <h3>Empty Cup Place (Real)</h3>
+          </div>
+          <div style="display: flex; justify-content: space-around; align-items: center;margin-bottom: 2em; width: 100%;">
+            <div style="display: flex; justify-content: space-around; align-items: center;width: 90%;">
+              <div style="text-align: center; width: 33.3%;"> 
+                  <video controls autoplay muted loop style="width: 100%;">
+                      <source src="files/real_data/pick_and_place_cup_left.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                  </video>
+                  <p>(a) <span style="color: black;">left</span></p>
+              </div>
+              <div style="text-align: center; width: 33.3%;">
+                  <video controls autoplay muted loop style="width: 100%;">
+                      <source src="files/real_data/pick_and_place_cup_top.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                  </video>
+                  <p>(b) <span style="color: black;">top</span></p>
+              </div>
+                <div style="text-align: center; width: 33.3%;">
+                  <video controls autoplay muted loop style="width: 100%;">
+                      <source src="files/real_data/pick_and_place_cup_right.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                  </video>
+                  <p>(c) <span style="color: black;">right</span></p>
+              </div>
+          </div>
+        </div>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: center; width: 50%;">
+          <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%;">
+            <h3>Empty Cup Place (Sim)</h3>
+          </div>
+          <div style="display: flex; justify-content: space-around; align-items: center;margin-bottom: 2em; width: 100%;">
+            <div style="display: flex; justify-content: space-around; align-items: center;width: 90%;">
+              <div style="text-align: center; width: 33.3%;">
+                  <video controls autoplay muted loop style="width: 100%;">
+                      <source src="files/task_video_benchmark/pick_empty_cup_left.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                  </video>
+                  <p>(a) <span style="color: black;">left</span></p>
+              </div>
+                <div style="text-align: center; width: 33.3%;">
+                  <video controls autoplay muted loop style="width: 100%;">
+                      <source src="files/task_video_benchmark/pick_empty_cup_top.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                  </video>
+                  <p>(b) <span style="color: black;">top</span></p>
+              </div>
+              <div style="text-align: center; width: 33.3%;">
+                <video controls autoplay muted loop style="width: 100%;">
+                    <source src="files/task_video_benchmark/pick_empty_cup_right.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>(c) <span style="color: black;">right</span></p>
+            </div>
+          </div>
+        </div>
+        </div>
+        </div>
+
+        <a class="anchor" id="dataset" style="margin-top: 0em"></a>
+        <section class="details" style="text-align: justify;">
+          <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%;">
+            <h2 style="margin: 0;">Dataset <a href="./dataset_show/index.html" target="_blank">[Video Show]</a></h2>
+            <img src="files/dataset.png" style="width: 80%; margin-top: 20px; margin-bottom: 10px;"/>
+          </div>
+
+          <div style="display: flex; flex-direction: column; align-items: center; width: 100%; margin-top: 2em;">
+            <div style="display: flex; justify-content: space-around; align-items: center;margin-bottom: 2em; width: 100%;">
+              <div style="display: flex; justify-content: space-around; align-items: center;width: 100%;">
+                <div style="text-align: center; width: 100%;">
+                    <video controls autoplay muted loop style="width: 100%;">
+                        <source src="./dataset_show/videos/cha_cake_front_episode1.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+              </div>
+              <div style="display: flex; justify-content: space-around; align-items: center;width: 100%;">
+                <div style="text-align: center; width: 100%;">
+                    <video controls autoplay muted loop style="width: 100%;">
+                        <source src="./dataset_show/videos/clean_ball_front_episode1.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+              </div>
+              <div style="display: flex; justify-content: space-around; align-items: center;width: 100%;">
+                <div style="text-align: center; width: 100%;">
+                    <video controls autoplay muted loop style="width: 100%;">
+                        <source src="./dataset_show/videos/deliver__origance_juice_front_episode1.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+              </div>
+              <div style="display: flex; justify-content: space-around; align-items: center;width: 100%;">
+                <div style="text-align: center; width: 100%;">
+                    <video controls autoplay muted loop style="width: 100%;">
+                        <source src="./dataset_show/videos/deliver_sci_front_episode1.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+              </div>
+              <div style="display: flex; justify-content: space-around; align-items: center;width: 100%;">
+                <div style="text-align: center; width: 100%;">
+                    <video controls autoplay muted loop style="width: 100%;">
+                        <source src="./dataset_show/videos/duan__guo_front_episode1.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+              </div>
+              <div style="display: flex; justify-content: space-around; align-items: center;width: 100%;">
+                <div style="text-align: center; width: 100%;">
+                    <video controls autoplay muted loop style="width: 100%;">
+                        <source src="./dataset_show/videos/hammer_knock_x_front_episode1.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+              </div>
+              <div style="display: flex; justify-content: space-around; align-items: center;width: 100%;">
+                <div style="text-align: center; width: 100%;">
+                    <video controls autoplay muted loop style="width: 100%;">
+                        <source src="./dataset_show/videos/hand_over_cup_front_episode1.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+              </div>
+              <div style="display: flex; justify-content: space-around; align-items: center;width: 100%;">
+                <div style="text-align: center; width: 100%;">
+                    <video controls autoplay muted loop style="width: 100%;">
+                        <source src="./dataset_show/videos/mianfen_front_episode1.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+              </div>
+            </div>      
+        </div>
+
+        <div style="display: flex; flex-direction: column; align-items: center; width: 100%; margin-top: -2em;">
+
+          <div style="display: flex; justify-content: space-around; align-items: center;margin-bottom: 2em; width: 100%;">
+            <div style="display: flex; justify-content: space-around; align-items: center;width: 100%;">
+              <div style="text-align: center; width: 100%;">
+                  <video controls autoplay muted loop style="width: 100%;">
+                      <source src="./dataset_show/videos/pick_and_place_cup_front_episode1.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                  </video>
+              </div>
+            </div>
+            <div style="display: flex; justify-content: space-around; align-items: center;width: 100%;">
+              <div style="text-align: center; width: 100%;">
+                  <video controls autoplay muted loop style="width: 100%;">
+                      <source src="./dataset_show/videos/pick_and_place_origance_juice_front_episode1.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                  </video>
+              </div>
+            </div>
+            <div style="display: flex; justify-content: space-around; align-items: center;width: 100%;">
+              <div style="text-align: center; width: 100%;">
+                  <video controls autoplay muted loop style="width: 100%;">
+                      <source src="./dataset_show/videos/pick_brash_front_episode1.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                  </video>
+              </div>
+            </div>
+            <div style="display: flex; justify-content: space-around; align-items: center;width: 100%;">
+              <div style="text-align: center; width: 100%;">
+                  <video controls autoplay muted loop style="width: 100%;">
+                      <source src="./dataset_show/videos/transport_cup_to_beidian_front_episode1.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                  </video>
+              </div>
+            </div>
+            <div style="display: flex; justify-content: space-around; align-items: center;width: 100%;">
+              <div style="text-align: center; width: 100%;">
+                  <video controls autoplay muted loop style="width: 100%;">
+                      <source src="./dataset_show/videos/wash_dish_front_episode1.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                  </video>
+              </div>
+            </div>
+            <div style="display: flex; justify-content: space-around; align-items: center;width: 100%;">
+              <div style="text-align: center; width: 100%;">
+                  <video controls autoplay muted loop style="width: 100%;">
+                      <source src="./dataset_show/videos/wash_gangguo_front_episode1.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                  </video>
+              </div>
+            </div>
+          </div>      
+      </div>
+
+
+        <!-- Hardware -->
+        <a class="anchor" id="hardware" style="margin-top: 2em"></a>
+        <section class="details" style="text-align: justify;">
+          <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%;">
+            <h2 style="margin: 0;">Hardware Platform</h2>
+            <img src="files/hardware.png" style="width: 80%; margin-top: 20px; margin-bottom: 10px;"/>
+            <p style="font-family: 'Times New Roman'"><strong>COBOT Magic platform from AgileX Robotics (<a href="https://global.agilex.ai/products/cobot-magic">https://global.agilex.ai/products/cobot-magic</a>)</strong> For the acquisition of real-world data, we employed the open-source COBOT Magic platform from AgileX Robotics, which is equipped with four AgileX Arms and four Intel Realsense D-435 RGBD cameras and is built on the Tracer chassis. These cameras are strategically positioned: one on the high part of the stand for an expansive field of view, two on the wrists of the robot's arms, and one on the low part of the stand which is optional for use. The front, left, and right cameras capture data simultaneously at a frequency of 30Hz. The data collection and alignment are facilitated by tools provided by the ARIO Data Alliance, available at our GitHub repository. Each captured frame consists of three images from the cameras, each providing an RGB and depth image at a resolution of 640 x 480 pixels. Additionally, the data includes the poses of the robotic arms' joints and end-effectors for both master and slave configurations, encompassing both left and right arms. For motion tasks, the linear and angular velocities of the differential drive chassis are also recorded. All data storage and formatting adhere to the unified standards established by the ARIO Data Alliance.<p>
+          </div>
+          
+
+
+        
+
+      <a class="anchor" id="experiment" style="margin-top: -2em"></a>
+      <section class="details" style="text-align: justify;">
+        <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%;">
+          <h2>Experiment</h2>
+        </div>
+        <div style="display: flex; margin: auto; width: 100%; height: auto; align-content: center; align-items: center;  justify-content: center;">
+          <img
+          style="width: 60%; height: auto"
+          src="files/experiment.png"
+          />
+        </div>
+        <br />
+        <p style="font-family: 'Times New Roman'"> <strong>Experimental Result</strong> Our experimental aim is not to delve into the design choices of different strategy networks, but to explore the correctness and effectiveness of our Benchmark expert data. Our experiments are intended to verify: a) the rationality of the COBOT Magic platform settings, b) the effectiveness of the automatically generated expert data.</p>
+        
+        
+        
+        <!-- ----------------------------- -->
+        
+
+        <a class="anchor" id="Bibtex & Citation"></a>
+
+      <section class="citation" style="text-align: justify;">
+        <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%;">
+          <h2>Bibtex</h2>
+        </div>
+<h3>RoboTwin 1.0 Version</h3>
+        <pre>
+            <code>
+@article{mu2025robotwin,
+  title={RoboTwin: Dual-Arm Robot Benchmark with Generative Digital Twins},
+  author={Mu, Yao and Chen, Tianxing and Chen, Zanxin and Peng, Shijia and Lan, Zhiqian and Gao, Zeyu and Liang, Zhixuan and Yu, Qiaojun and Zou, Yude and Xu, Mingkun and others},
+  journal={arXiv preprint arXiv:2504.13059},
+  year={2025}
+}
+            </code></pre>
+<h3>RoboTwin Early Version</h3>
+        <pre>
+      <code>
+@article{mu2024robotwin,
+  title={RoboTwin: Dual-Arm Robot Benchmark with Generative Digital Twins (early version)},
+  author={Mu, Yao and Chen, Tianxing and Peng, Shijia and Chen, Zanxin and Gao, Zeyu and Zou, Yude and Lin, Lunkai and Xie, Zhiqiang and Luo, Ping},
+  journal={arXiv preprint arXiv:2409.02920},
+  year={2024}
+}
+      </code></pre>
+      </section>
+      <br/>
+
+      
+      <a class="anchor" id="deployment"></a>
+      <div style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%;">
+        <h2>Video Show of DP3 deployment</h2>
+      </div>
+      <div style="display: flex; margin: auto; width: 100%; height: auto; align-content: center; align-items: center;  justify-content: center;">
+        <img
+        style="width: 80%; height: auto"
+        src="files/benchmark_task_description.png"
+        />
+      </div>
+      <h3 style="margin-bottom: 0">Hammer Beat</h3>
+      <div style="display: flex; justify-content: space-around; align-items: center; margin-bottom: 2em;">
+          <div style="text-align: center;">
+              <video controls autoplay muted loop style="width: 250px;">
+                  <source src="files/task_video/success/hammer_beat_expert.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+              </video>
+              <p>(a) <span style="color: black;">observer</span> <span style="color: green;">success</span></p>
+          </div>
+          <div style="text-align: center;">
+              <video controls autoplay muted loop style="width: 250px;">
+                  <source src="files/task_video/success/hammer_beat_top.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+              </video>
+              <p>(b) <span style="color: black;">top</span> <span style="color: green;">success</span></p>
+          </div>
+          <div style="text-align: center;">
+              <video controls autoplay muted loop style="width: 250px;">
+                  <source src="files/task_video/fail/hammer_beat_expert.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+              </video>
+              <p>(c) <span style="color: black;">observer</span> <span style="color: red;">fail</span></p>
+          </div>
+          <div style="text-align: center;">
+              <video controls autoplay muted loop style="width: 250px;">
+                  <source src="files/task_video/fail/hammer_beat_top.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+              </video>
+              <p>(d) <span style="color: black;">top</span> <span style="color: red;">fail</span></p>
+          </div>
+      </div>
+      
+      <h3 style="margin-bottom: 0">Block Handover</h3>
+      <div style="display: flex; justify-content: space-around; align-items: center; margin-bottom: 2em;">
+          <div style="text-align: center;">
+              <video controls autoplay muted loop style="width: 250px;">
+                  <source src="files/task_video/success/move_bottle_expert.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+              </video>
+              <p>(a) <span style="color: black;">observer</span> <span style="color: green;">success</span></p>
+          </div>
+          <div style="text-align: center;">
+              <video controls autoplay muted loop style="width: 250px;">
+                  <source src="files/task_video/success/move_bottle_top.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+              </video>
+              <p>(b) <span style="color: black;">top</span> <span style="color: green;">success</span></p>
+          </div>
+          <div style="text-align: center;">
+              <video controls autoplay muted loop style="width: 250px;">
+                  <source src="files/task_video/fail/move_bottle_expert.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+              </video>
+              <p>(c) <span style="color: black;">observer</span> <span style="color: red;">fail</span></p>
+          </div>
+          <div style="text-align: center;">
+              <video controls autoplay muted loop style="width: 250px;">
+                  <source src="files/task_video/fail/move_bottle_top.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+              </video>
+              <p>(d) <span style="color: black;">top</span> <span style="color: red;">fail</span></p>
+          </div>
+      </div>
+      
+      <h3 style="margin-bottom: 0">Apple Cabinet Storage</h3>
+      <div style="display: flex; justify-content: space-around; align-items: center; margin-bottom: 2em;">
+          <div style="text-align: center;">
+              <video controls autoplay muted loop style="width: 250px;">
+                  <source src="files/task_video/success/open_cabinet_put_apple_expert.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+              </video>
+              <p>(a) <span style="color: black;">observer</span> <span style="color: green;">success</span></p>
+          </div>
+          <div style="text-align: center;">
+              <video controls autoplay muted loop style="width: 250px;">
+                  <source src="files/task_video/success/open_cabinet_put_apple_top.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+              </video>
+              <p>(b) <span style="color: black;">top</span> <span style="color: green;">success</span></p>
+          </div>
+          <div style="text-align: center;">
+              <video controls autoplay muted loop style="width: 250px;">
+                  <source src="files/task_video/fail/open_cabinet_put_apple_expert.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+              </video>
+              <p>(c) <span style="color: black;">observer</span> <span style="color: red;">fail</span></p>
+          </div>
+          <div style="text-align: center;">
+              <video controls autoplay muted loop style="width: 250px;">
+                  <source src="files/task_video/fail/open_cabinet_put_apple_top.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+              </video>
+              <p>(d) <span style="color: black;">top</span> <span style="color: red;">fail</span></p>
+          </div>
+      </div>
+
+      <h3 style="margin-bottom: 0">Dual-Bottles Pick</h3>
+      <div style="display: flex; justify-content: space-around; align-items: center; margin-bottom: 2em;">
+          <div style="text-align: center;">
+              <video controls autoplay muted loop style="width: 250px;">
+                  <source src="files/task_video/success/pick_bottles_expert.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+              </video>
+              <p>(a) <span style="color: black;">observer</span> <span style="color: green;">success</span></p>
+          </div>
+          <div style="text-align: center;">
+              <video controls autoplay muted loop style="width: 250px;">
+                  <source src="files/task_video/success/pick_bottles_top.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+              </video>
+              <p>(b) <span style="color: black;">top</span> <span style="color: green;">success</span></p>
+          </div>
+          <div style="text-align: center;">
+              <video controls autoplay muted loop style="width: 250px;">
+                  <source src="files/task_video/fail/pick_bottles_expert.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+              </video>
+              <p>(c) <span style="color: black;">observer</span> <span style="color: red;">fail</span></p>
+          </div>
+          <div style="text-align: center;">
+              <video controls autoplay muted loop style="width: 250px;">
+                  <source src="files/task_video/fail/pick_bottles_top.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+              </video>
+              <p>(d) <span style="color: black;">top</span> <span style="color: red;">fail</span></p>
+          </div>
+      </div>
+
+      <h3 style="margin-bottom: 0">Empty Cup Place</h3>
+      <div style="display: flex; justify-content: space-around; align-items: center; margin-bottom: 2em;">
+          <div style="text-align: center;">
+              <video controls autoplay muted loop style="width: 250px;">
+                  <source src="files/task_video/success/pick_empty_cup_expert.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+              </video>
+              <p>(a) <span style="color: black;">observer</span> <span style="color: green;">success</span></p>
+          </div>
+          <div style="text-align: center;">
+              <video controls autoplay muted loop style="width: 250px;">
+                  <source src="files/task_video/success/pick_empty_cup_top.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+              </video>
+              <p>(b) <span style="color: black;">top</span> <span style="color: green;">success</span></p>
+          </div>
+          <div style="text-align: center;">
+              <video controls autoplay muted loop style="width: 250px;">
+                  <source src="files/task_video/fail/pick_empty_cup_expert.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+              </video>
+              <p>(c) <span style="color: black;">observer</span> <span style="color: red;">fail</span></p>
+          </div>
+          <div style="text-align: center;">
+              <video controls autoplay muted loop style="width: 250px;">
+                  <source src="files/task_video/fail/pick_empty_cup_top.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+              </video>
+              <p>(d) <span style="color: black;">top</span> <span style="color: red;">fail</span></p>
+          </div>
+      </div>
+
+      <h3 style="margin-bottom: 0">Block Sweep</h3>
+      <div style="display: flex; justify-content: space-around; align-items: center; margin-bottom: 2em;">
+          <div style="text-align: center;">
+              <video controls autoplay muted loop style="width: 250px;">
+                  <source src="files/task_video/success/put_ball_into_dustpan_expert.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+              </video>
+              <p>(a) <span style="color: black;">observer</span> <span style="color: green;">success</span></p>
+          </div>
+          <div style="text-align: center;">
+              <video controls autoplay muted loop style="width: 250px;">
+                  <source src="files/task_video/success/put_ball_into_dustpan_top.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+              </video>
+              <p>(b) <span style="color: black;">top</span> <span style="color: green;">success</span></p>
+          </div>
+          <div style="text-align: center;">
+              <video controls autoplay muted loop style="width: 250px;">
+                  <source src="files/task_video/fail/put_ball_into_dustpan_expert.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+              </video>
+              <p>(c) <span style="color: black;">observer</span> <span style="color: red;">fail</span></p>
+          </div>
+          <div style="text-align: center;">
+              <video controls autoplay muted loop style="width: 250px;">
+                  <source src="files/task_video/fail/put_ball_into_dustpan_top.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+              </video>
+              <p>(d) <span style="color: black;">top</span> <span style="color: red;">fail</span></p>
+          </div>
+      </div>
+
+
+
+
+      <script type="importmap">
+        {
+          "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.150.1/build/three.module.js",
+            "OrbitControls": "https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/controls/OrbitControls.js",
+            "OBJLoader": "https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/loaders/OBJLoader.js",
+            "GLTFLoader": "https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/loaders/GLTFLoader.js",
+            "MTLLoader": "https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/loaders/MTLLoader.js"
+          }
+        }
+      </script>
+    
+      <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'OrbitControls';
+        import { OBJLoader } from 'OBJLoader';
+        import { GLTFLoader } from 'GLTFLoader';
+        import { MTLLoader } from 'MTLLoader';
+    
+        document.addEventListener("DOMContentLoaded", function () {
+          const models = ['024_brush', '028_dustpan', '019_coaste', '022_cup'];
+          const scalesize = ["0.7", "1.2", "1.2", "1", "1", "0.5", "0.5", "1"];
+          const container = document.getElementById("3d-models");
+          const interactiveViewer = document.getElementById("interactive-viewer");
+          const infoBox = document.getElementById("info-box");
+    
+          let currentModel = models[0];
+          let interactiveRenderer = null;
+    
+          models.forEach((model, index) => {
+            const viewerDiv = document.createElement("div");
+            viewerDiv.className = "viewer";
+            viewerDiv.dataset.model = model;
+            // viewerDiv.addEventListener("click", () => updateInteractiveViewer(model, index, viewerDiv));
+            container.appendChild(viewerDiv);
+            if (index < 5)
+              loadModel_mtl(model, index, viewerDiv);
+            else loadModel_glb(model, index, viewerDiv);
+            // loadModel_glb(model, index, viewerDiv);
+            // if (index === 0) {
+            //   viewerDiv.click();
+            //   updateInfoBox(model, index);
+            // }
+          });
+    
+          function updateInteractiveViewer(model, index, selectedViewer) {
+            document.getElementById('interactive-container').style.display = 'block';
+            currentModel = model;
+            const previousSelected = container.querySelector(".viewer.selected");
+            if (previousSelected) {
+              previousSelected.classList.remove("selected");
+            }
+            selectedViewer.classList.add("selected");
+            if (index < 5)
+            loadInteractiveModel_mtl(model, index, interactiveViewer);
+            else loadInteractiveModel_glb(model, index, interactiveViewer);
+            // loadInteractiveModel_glb(model, index, interactiveViewer);
+            updateInfoBox(model, index);
+          }
+    
+          function updateInfoBox(model) {
+            infoBox.innerHTML = `<p>Model: ${model} <br> Size: (H, W, L) <br> Real Object Purchase Link: <a href="https://tianxingchen.github.io">link</a> <br> Files Download link: <a href="https://tianxingchen.github.io">link</a> </p>`;
+          }
+    
+          function loadModel_mtl(model, index, viewer) {
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(50, viewer.offsetWidth / viewer.offsetHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(viewer.offsetWidth, viewer.offsetHeight);
+            viewer.appendChild(renderer.domElement);
+            renderer.setClearColor(0xCCCCCC);
+    
+            const ambientLight = new THREE.AmbientLight(0x404040, 8);
+            scene.add(ambientLight);
+    
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 8);
+            directionalLight.position.set(0, 1, 1).normalize();
+            scene.add(directionalLight);
+    
+            const mtlLoader = new MTLLoader();
+            mtlLoader.setPath(`files/obj/${model}/`);
+            mtlLoader.load('base.mtl', (materials) => {
+              materials.preload();
+              const objLoader = new OBJLoader();
+              objLoader.setMaterials(materials);
+              objLoader.setPath(`files/obj/${model}/`);
+              objLoader.load('textured.obj', function (object) {
+                scene.add(object);
+                object.position.set(0, 0, 0);
+    
+                const box = new THREE.Box3().setFromObject(object);
+                const center = box.getCenter(new THREE.Vector3());
+                const size = box.getSize(new THREE.Vector3());
+    
+                const maxDim = Math.max(size.x, size.y, size.z);
+                const scale = 1 / maxDim;
+                object.scale.set(scalesize[index], scalesize[index], scalesize[index]);
+    
+                camera.position.set(center.x, center.y + size.z * 2, size.z * 2);
+                camera.lookAt(center);
+    
+                function animate() {
+                  requestAnimationFrame(animate);
+                  object.rotation.y += 0.01;
+                  renderer.render(scene, camera);
+                }
+                animate();
+              }, undefined, function (error) {
+                console.error(`Error loading OBJ file: ${error}`);
+              });
+            }, undefined, function (error) {
+              console.error(`Error loading MTL file: ${error}`);
+            });
+    
+            camera.position.z = 2;
+          }
+    
+          function loadModel_glb(model, index, viewer) {
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(50, viewer.offsetWidth / viewer.offsetHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(viewer.offsetWidth, viewer.offsetHeight);
+            renderer.outputEncoding = THREE.sRGBEncoding;
+            viewer.appendChild(renderer.domElement);
+            renderer.setClearColor(0xCCCCCC);
+    
+            const ambientLight = new THREE.AmbientLight(0x404040, 5);
+            scene.add(ambientLight);
+    
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+            directionalLight.position.set(0, 1, 1).normalize();
+            scene.add(directionalLight);
+    
+            const gltfLoader = new GLTFLoader();
+            gltfLoader.load(`files/glb/${model}/base.glb`, function (gltf) {
+              const object = gltf.scene;
+              scene.add(object);
+              object.position.set(0, 0, 0);
+              object.traverse((node) => {
+                if (node.isMesh) {
+                  node.material = new THREE.MeshStandardMaterial({
+                    map: node.material.map,
+                    roughness: node.material.roughness,
+                    metalness: node.material.metalness,
+                  });
+                }
+              });
+              const box = new THREE.Box3().setFromObject(object);
+              const center = box.getCenter(new THREE.Vector3());
+              const size = box.getSize(new THREE.Vector3());
+    
+              const maxDim = Math.max(size.x, size.y, size.z);
+              const scale = 1 / maxDim;
+              object.scale.set(scalesize[index], scalesize[index], scalesize[index]);
+    
+              camera.position.set(center.x, center.y + size.z * 2, size.z * 2);
+              camera.lookAt(center);
+    
+              function animate() {
+                requestAnimationFrame(animate);
+                object.rotation.y += 0.01;
+                renderer.render(scene, camera);
+              }
+              animate();
+            }, undefined, function (error) {
+              console.error(`Error loading GLB file: ${error}`);
+            });
+    
+            camera.position.z = 2;
+          }
+    
+          function loadInteractiveModel_mtl(model, index, viewer) {
+            while (viewer.firstChild) {
+              viewer.removeChild(viewer.firstChild);
+            }
+    
+            if (interactiveRenderer) {
+              interactiveRenderer.dispose();
+              interactiveRenderer.forceContextLoss();
+              interactiveRenderer = null;
+            }
+    
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(50, viewer.offsetWidth / viewer.offsetHeight, 0.1, 1000);
+            interactiveRenderer = new THREE.WebGLRenderer({ antialias: true });
+            interactiveRenderer.setSize(viewer.offsetWidth, viewer.offsetHeight);
+            viewer.appendChild(interactiveRenderer.domElement);
+    
+            interactiveRenderer.setClearColor(0xCCCCCC);
+    
+            const controls = new OrbitControls(camera, interactiveRenderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.25;
+            controls.screenSpacePanning = false;
+            controls.minDistance = 1;
+            controls.maxDistance = 1000;
+    
+            const ambientLight = new THREE.AmbientLight(0x404040, 8);
+            scene.add(ambientLight);
+    
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 8);
+            directionalLight.position.set(0, 1, 1).normalize();
+            scene.add(directionalLight);
+    
+            const mtlLoader = new MTLLoader();
+            mtlLoader.setPath(`files/obj/${model}/`);
+            mtlLoader.load('base.mtl', (materials) => {
+              materials.preload();
+              const objLoader = new OBJLoader();
+              objLoader.setMaterials(materials);
+              objLoader.setPath(`files/obj/${model}/`);
+              objLoader.load('textured.obj', function (object) {
+                scene.add(object);
+                object.position.set(0, 0, 0);
+    
+                const box = new THREE.Box3().setFromObject(object);
+                const center = box.getCenter(new THREE.Vector3());
+                const size = box.getSize(new THREE.Vector3());
+    
+                const maxDim = Math.max(size.x, size.y, size.z);
+                const scale = 1 / maxDim;
+                
+                if (index == 1 || index == 4){
+                  object.scale.set(7, 7, 7);
+                }
+                  
+                camera.position.set(center.x, center.y, size.z * 2);
+                camera.lookAt(center);
+    
+                function animate() {
+                  requestAnimationFrame(animate);
+                  controls.update();
+                  directionalLight.position.copy(camera.position).add(new THREE.Vector3(0, 1, 1));
+                  interactiveRenderer.render(scene, camera);
+                }
+                animate();
+              }, undefined, function (error) {
+                console.error(`Error loading OBJ file: ${error}`);
+              });
+            }, undefined, function (error) {
+              console.error(`Error loading MTL file: ${error}`);
+            });
+    
+            camera.position.z = 2;
+          }
+    
+          function loadInteractiveModel_glb(model, index, viewer) {
+            while (viewer.firstChild) {
+              viewer.removeChild(viewer.firstChild);
+            }
+    
+            if (interactiveRenderer) {
+              interactiveRenderer.dispose();
+              interactiveRenderer.forceContextLoss();
+              interactiveRenderer = null;
+            }
+    
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(50, viewer.offsetWidth / viewer.offsetHeight, 0.1, 1000);
+            interactiveRenderer = new THREE.WebGLRenderer({ antialias: true });
+            interactiveRenderer.setSize(viewer.offsetWidth, viewer.offsetHeight);
+            interactiveRenderer.outputEncoding = THREE.sRGBEncoding;
+            viewer.appendChild(interactiveRenderer.domElement);
+    
+            interactiveRenderer.setClearColor(0xCCCCCC);
+    
+            const controls = new OrbitControls(camera, interactiveRenderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.25;
+            controls.screenSpacePanning = false;
+            controls.minDistance = 1;
+            controls.maxDistance = 1000;
+    
+            const ambientLight = new THREE.AmbientLight(0x404040, 6);
+            scene.add(ambientLight);
+    
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+            directionalLight.position.set(0, 1, 1).normalize();
+            scene.add(directionalLight);
+    
+            const gltfLoader = new GLTFLoader();
+            gltfLoader.load(`files/glb/${model}/base.glb`, function (gltf) {
+              const object = gltf.scene;
+              scene.add(object);
+              object.position.set(0, 0, 0);
+              object.traverse((node) => {
+                if (node.isMesh) {
+                  node.material = new THREE.MeshStandardMaterial({
+                    map: node.material.map,
+                    roughness: node.material.roughness,
+                    metalness: node.material.metalness,
+                  });
+                }
+              });
+              const box = new THREE.Box3().setFromObject(object);
+              const center = box.getCenter(new THREE.Vector3());
+              const size = box.getSize(new THREE.Vector3());
+    
+              const maxDim = Math.max(size.x, size.y, size.z);
+              const scale = 1 / maxDim;
+              // object.scale.set(scalesize[index], scalesize[index], scalesize[index]);
+    
+              camera.position.set(center.x, center.y, size.z * 2);
+              camera.lookAt(center);
+    
+              function animate() {
+                requestAnimationFrame(animate);
+                controls.update();
+                directionalLight.position.copy(camera.position).add(new THREE.Vector3(0, 1, 1));
+                interactiveRenderer.render(scene, camera);
+              }
+              animate();
+            }, undefined, function (error) {
+              console.error(`Error loading GLB file: ${error}`);
+            });
+    
+            camera.position.z = 2;
+          }
+    
+        });
+      </script>
+     <section class="acknowledgements">
+       <h2>Acknowledgements</h2>
+       <p style="font-family: 'Times New Roman', Arial;">
+        The authors extend their profound gratitude to <strong>D-robotics</strong> for their invaluable support in supplying the necessary cloud computing resources that facilitated the execution of this research. Furthermore, our sincere appreciation is extended to Deeoms for their contribution in providing essential model support, which was pivotal to the successful completion of this study.
+        </p> 
+      </section>
+    </main>
+  </body>
+</html>
